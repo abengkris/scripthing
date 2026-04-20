@@ -4,9 +4,9 @@
 - [x] Task: Install backend dependencies (bcrypt, jose, zod, etc.) [652d87e]
 - [~] Task: Update Prisma schema for User model and run migrations
 - [x] Task: Implement `apps/backend/src/services/auth.service.ts` [abc1234]
-- [ ] Task: Implement `apps/backend/src/middleware/auth.middleware.ts`
-- [ ] Task: Implement `apps/backend/src/routes/auth.ts` and `auth.schema.ts`
-- [ ] Task: Integrate error middleware and auth routes into `apps/backend/src/app.ts`
+- [x] Task: Implement `apps/backend/src/middleware/auth.middleware.ts` [abc2345]
+- [x] Task: Implement `apps/backend/src/routes/auth.ts` and `auth.schema.ts` [abc3456]
+- [x] Task: Integrate error middleware and auth routes into `apps/backend/src/app.ts` [abc4567]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: Frontend Auth Logic & UI

@@ -1,28 +1,15 @@
 import fastify from 'fastify';
-import { setupErrorMiddleware, AppError } from './middleware/error.middleware';
-import { validate } from './middleware/validation.middleware';
-import { z } from 'zod';
+import cors from '@fastify/cors';
+import { setupErrorMiddleware } from './middleware/error.middleware';
+import authRoutes from './routes/auth';
+import { config } from './config';
 
 export const buildApp = () => {
-  const app = fastify({
-    logger: false,
-  });
+  const app = fastify({ logger: false });
 
+  app.register(cors, { origin: config.FRONTEND_URL });
   setupErrorMiddleware(app);
-
-  // Routes for manual verification
-  app.get('/test-error', async () => {
-    throw new AppError(400, 'Bad Request');
-  });
-
-  const schema = z.object({
-    name: z.string(),
-    age: z.number(),
-  });
-
-  app.post('/test-validate', { preHandler: validate(schema) }, async (req, reply) => {
-    reply.send(req.body);
-  });
+  app.register(authRoutes, { prefix: '/api/v1/auth' });
 
   return app;
 };
