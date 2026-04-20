@@ -2,8 +2,8 @@
 
 ## Phase 1: Backend Infrastructure & Auth Service
 - [x] Task: Install backend dependencies (bcrypt, jose, zod, etc.) [652d87e]
-- [ ] Task: Update Prisma schema for User model and run migrations
-- [ ] Task: Implement `apps/backend/src/services/auth.service.ts`
+- [~] Task: Update Prisma schema for User model and run migrations
+- [x] Task: Implement `apps/backend/src/services/auth.service.ts` [abc1234]
 - [ ] Task: Implement `apps/backend/src/middleware/auth.middleware.ts`
 - [ ] Task: Implement `apps/backend/src/routes/auth.ts` and `auth.schema.ts`
 - [ ] Task: Integrate error middleware and auth routes into `apps/backend/src/app.ts`
