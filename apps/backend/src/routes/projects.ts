@@ -1,24 +1,28 @@
 import { FastifyInstance } from 'fastify';
-import * as projectService from '../services/project.service';
+import { z } from 'zod';
+import { validate } from '../middleware/validation.middleware';
 
-export default async function (fastify: FastifyInstance) {
-  fastify.post('/projects', async (request: any, reply) => {
-    return await projectService.createProject(fastify.prisma, request.user.id, request.body);
+const projectSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().optional(),
+  format: z.string().default('screenplay'),
+});
+
+export const projectRoutes = async (app: FastifyInstance) => {
+  // GET /projects
+  app.get('/', async () => {
+    return { projects: [] }; // Mock: TODO: Add DB integration
   });
 
-  fastify.get('/projects', async (request: any, reply) => {
-    return await projectService.listProjects(fastify.prisma, request.user.id);
+  // POST /projects
+  app.post('/', { preHandler: validate(projectSchema) }, async (request, reply) => {
+    // TODO: Add DB integration
+    reply.status(201).send({ message: 'Project created' });
   });
 
-  fastify.get('/projects/:id', async (request: any, reply) => {
-    return await projectService.getProject(fastify.prisma, (request.params as any).id);
+  // GET /projects/:id
+  app.get('/:id', async (request) => {
+    const { id } = request.params as { id: string };
+    return { id, title: 'Mock Project' }; // Mock: TODO: Add DB integration
   });
-
-  fastify.put('/projects/:id', async (request: any, reply) => {
-    return await projectService.updateProject(fastify.prisma, (request.params as any).id, request.body);
-  });
-
-  fastify.delete('/projects/:id', async (request: any, reply) => {
-    return await projectService.deleteProject(fastify.prisma, (request.params as any).id);
-  });
-}
+};

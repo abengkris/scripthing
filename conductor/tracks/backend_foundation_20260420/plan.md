@@ -15,8 +15,8 @@
 ## Phase 3: Service Layer Implementation
 - [x] Task: Implement Auth Service [9a31b39]
     - [x] Add JWT handling and password hashing
-    - [x] Create auth routes (register, login) (pending)
-- [ ] Task: Implement Project Service
+    - [x] Create auth routes (register, login) [4b11128]
+- [~] Task: Implement Project Service
     - [ ] Create project CRUD routes
 - [ ] Task: Implement Script Service
     - [ ] Create script CRUD and snapshot management routes
