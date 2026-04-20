@@ -18,8 +18,8 @@
     - [x] Create auth routes (register, login) [4b11128]
 - [x] Task: Implement Project Service [f7a5cbe]
     - [x] Create project CRUD routes
-- [~] Task: Implement Script Service
-    - [ ] Create script CRUD and snapshot management routes
-- [ ] Task: Implement Settings Service
+- [x] Task: Implement Script Service [e3ac85f]
+    - [x] Create script CRUD and snapshot management routes
+- [~] Task: Implement Settings Service
     - [ ] Create settings GET/PUT routes
 - [ ] Task: Conductor - User Manual Verification 'Service Layer Implementation' (Protocol in workflow.md)
