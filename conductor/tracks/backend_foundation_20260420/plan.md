@@ -5,12 +5,11 @@
 - [ ] Task: Conductor - User Manual Verification 'Database & Schema Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Core Infrastructure & Error Handling
-- [~] Task: Setup Fastify app bootstrap
-    - [ ] Create `app.ts` factory
-    - [ ] Setup standardized error middleware
-    - [ ] Setup Zod validation middleware
-- [ ] Task: Setup custom error classes
-    - [ ] Implement AppError base class and specific error types
+- [x] Task: Setup Fastify app bootstrap [9883447]
+- [x] Task: Setup standardized error middleware [f121f3f]
+    - [x] Setup standardized error middleware
+    - [x] Setup custom error classes
+- [~] Task: Setup Zod validation middleware
 - [ ] Task: Conductor - User Manual Verification 'Core Infrastructure & Error Handling' (Protocol in workflow.md)
 
 ## Phase 3: Service Layer Implementation
