@@ -9,11 +9,11 @@
 - [x] Task: Setup standardized error middleware [f121f3f]
     - [x] Setup standardized error middleware
     - [x] Setup custom error classes
-- [~] Task: Setup Zod validation middleware
-- [ ] Task: Conductor - User Manual Verification 'Core Infrastructure & Error Handling' (Protocol in workflow.md)
+- [x] Task: Setup Zod validation middleware [62c3a22]
+- [x] Task: Conductor - User Manual Verification 'Core Infrastructure & Error Handling' (Protocol in workflow.md) [checkpoint: 432dd5a]
 
 ## Phase 3: Service Layer Implementation
-- [ ] Task: Implement Auth Service
+- [~] Task: Implement Auth Service
     - [ ] Add JWT handling and password hashing
     - [ ] Create auth routes (register, login)
 - [ ] Task: Implement Project Service
