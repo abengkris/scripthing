@@ -1,14 +1,18 @@
-export const api = {
-  get: async (url: string) => {
-    const response = await fetch(`http://localhost:3001/api/v1${url}`);
-    return response.json();
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
   },
-  post: async (url: string, data: any) => {
-    const response = await fetch(`http://localhost:3001/api/v1${url}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    return response.json();
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-};
+  return config;
+});
+
+export default api;

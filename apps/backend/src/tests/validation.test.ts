@@ -11,11 +11,15 @@ describe('Validation Middleware', () => {
     age: z.number(),
   });
 
-  beforeAll(() => {
+  beforeAll(async () => {
     setupErrorMiddleware(app);
-    app.post('/test-validate', { preHandler: validate(schema) }, async (req, reply) => {
-      reply.send(req.body);
-    });
+    try {
+        app.post('/test-validate', { preHandler: validate(schema) }, async (req, reply) => {
+        reply.send(req.body);
+        });
+    } catch (e) {
+        // Route already exists, ignore
+    }
   });
 
   it('should pass validation', async () => {
