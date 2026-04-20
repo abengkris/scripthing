@@ -12,10 +12,27 @@
     "test": "pnpm -r test",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "apps/frontend/src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "apps/backend/src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "packages/shared/src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "engines": {
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
   }
 }
