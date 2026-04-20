@@ -7,9 +7,15 @@
   ],
   "scripts": {
     "dev": "pnpm -r dev",
-    "build": "pnpm -r build"
+    "build": "pnpm -r build",
+    "check": "echo 'Running pre-commit checks...' && pnpm -r run lint && pnpm -r run type-check",
+    "test": "pnpm -r test",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
   }
 }
