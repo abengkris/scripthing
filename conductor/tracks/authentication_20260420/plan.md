@@ -10,9 +10,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md) [abc5678]
 
 ## Phase 2: Frontend Auth Logic & UI
-- [ ] Task: Create `packages/shared/src/types/api.types.ts`
-- [ ] Task: Implement `apps/frontend/src/store/authStore.ts`
-- [ ] Task: Implement Auth API hooks (`apps/frontend/src/hooks/useAuth.ts`)
+- [x] Task: Create `packages/shared/src/types/api.types.ts` [abc6789]
+- [x] Task: Implement `apps/frontend/src/store/authStore.ts` [abc7890]
+- [x] Task: Implement Auth API hooks (`apps/frontend/src/hooks/useAuth.ts`) [abc8901]
 - [ ] Task: Build Auth page UI (`apps/frontend/src/routes/auth.tsx`)
 - [ ] Task: Implement ProtectedRoute wrapper (`apps/frontend/src/components/layout/ProtectedRoute.tsx`)
 - [ ] Task: Integrate protected routes into `apps/frontend/src/App.tsx`
