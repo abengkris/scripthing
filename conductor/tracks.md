@@ -10,3 +10,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 ---
 
 - [x] **Track: Core foundation: Backend setup (Fastify + Prisma + SQLite)**
+
+---
+
+- [ ] **Track: Set up the frontend application for the Scripthing.**
+*Link: [./tracks/frontend_setup_20260420/](./tracks/frontend_setup_20260420/)*
