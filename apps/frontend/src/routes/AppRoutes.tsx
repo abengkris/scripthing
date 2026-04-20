@@ -1,12 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
+import AuthPage from './auth';
+import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<div>Dashboard</div>} />
-      <Route path="/auth" element={<div>Auth</div>} />
-      <Route path="/editor/:id" element={<div>Editor</div>} />
-      <Route path="/settings" element={<div>Settings</div>} />
+      <Route path=\"/auth\" element={<AuthPage />} />
+      <Route path=\"/\" element={<ProtectedRoute><div>Dashboard</div></ProtectedRoute>} />
+      <Route path=\"/editor/:id\" element={<ProtectedRoute><div>Editor</div></ProtectedRoute>} />
+      <Route path=\"/settings\" element={<ProtectedRoute><div>Settings</div></ProtectedRoute>} />
     </Routes>
   );
 }

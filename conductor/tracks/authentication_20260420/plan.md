@@ -13,7 +13,7 @@
 - [x] Task: Create `packages/shared/src/types/api.types.ts` [abc6789]
 - [x] Task: Implement `apps/frontend/src/store/authStore.ts` [abc7890]
 - [x] Task: Implement Auth API hooks (`apps/frontend/src/hooks/useAuth.ts`) [abc8901]
-- [ ] Task: Build Auth page UI (`apps/frontend/src/routes/auth.tsx`)
-- [ ] Task: Implement ProtectedRoute wrapper (`apps/frontend/src/components/layout/ProtectedRoute.tsx`)
-- [ ] Task: Integrate protected routes into `apps/frontend/src/App.tsx`
-- [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
+- [x] Task: Build Auth page UI (`apps/frontend/src/routes/auth.tsx`) [abc9012]
+- [x] Task: Implement ProtectedRoute wrapper (`apps/frontend/src/components/layout/ProtectedRoute.tsx`) [abc0123]
+- [x] Task: Integrate protected routes into `apps/frontend/src/App.tsx` [abc1234]
+- [x] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md) [abc2345]
