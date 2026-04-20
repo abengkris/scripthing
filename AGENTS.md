@@ -555,7 +555,7 @@ volumes:
 
 ```bash
 # 1. Clone the repository
-git clone <repo-url> && cd scriptwriter-app
+git clone https://github.com/abengkris/scripthing.git && cd scripthing
 
 # 2. Create .env from the example
 cp .env.example .env
