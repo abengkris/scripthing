@@ -5,7 +5,7 @@ import { config } from '../config';
 import { prisma } from '../plugins/prisma';
 import { AppError } from '../middleware/error.middleware';
 
-const SALT_ROUNDS = 12;
+const SALT_ROUNDS = Number(config.SALT_ROUNDS || 12);
 const APP_SECRET = new TextEncoder().encode(config.APP_SECRET);
 
 export const authService = {
