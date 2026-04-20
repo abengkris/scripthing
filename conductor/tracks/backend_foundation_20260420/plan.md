@@ -5,7 +5,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Database & Schema Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Core Infrastructure & Error Handling
-- [ ] Task: Setup Fastify app bootstrap
+- [~] Task: Setup Fastify app bootstrap
     - [ ] Create `app.ts` factory
     - [ ] Setup standardized error middleware
     - [ ] Setup Zod validation middleware
