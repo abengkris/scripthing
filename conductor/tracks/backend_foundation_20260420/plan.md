@@ -16,9 +16,9 @@
 - [x] Task: Implement Auth Service [9a31b39]
     - [x] Add JWT handling and password hashing
     - [x] Create auth routes (register, login) [4b11128]
-- [~] Task: Implement Project Service
-    - [ ] Create project CRUD routes
-- [ ] Task: Implement Script Service
+- [x] Task: Implement Project Service [f7a5cbe]
+    - [x] Create project CRUD routes
+- [~] Task: Implement Script Service
     - [ ] Create script CRUD and snapshot management routes
 - [ ] Task: Implement Settings Service
     - [ ] Create settings GET/PUT routes

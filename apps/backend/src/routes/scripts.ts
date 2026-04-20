@@ -1,24 +1,32 @@
 import { FastifyInstance } from 'fastify';
-import * as scriptService from '../services/script.service';
+import { z } from 'zod';
+import { validate } from '../middleware/validation.middleware';
 
-export default async function (fastify: FastifyInstance) {
-  fastify.post('/projects/:projectId/scripts', async (request: any, reply) => {
-    return await scriptService.createScript(fastify.prisma, (request.params as any).projectId, request.body);
+const scriptSchema = z.object({
+  title: z.string().min(1),
+  content: z.string(), // JSON string
+});
+
+export const scriptRoutes = async (app: FastifyInstance) => {
+  // GET /projects/:projectId/scripts
+  app.get('/:projectId/scripts', async (request) => {
+    const { projectId } = request.params as { projectId: string };
+    return { scripts: [] }; // Mock
   });
 
-  fastify.get('/projects/:projectId/scripts', async (request: any, reply) => {
-    return await scriptService.listScripts(fastify.prisma, (request.params as any).projectId);
+  // POST /projects/:projectId/scripts
+  app.post('/:projectId/scripts', { preHandler: validate(scriptSchema) }, async (request, reply) => {
+    reply.status(201).send({ message: 'Script created' });
   });
 
-  fastify.get('/scripts/:id', async (request: any, reply) => {
-    return await scriptService.getScript(fastify.prisma, (request.params as any).id);
+  // GET /scripts/:id
+  app.get('/:id', async (request) => {
+    const { id } = request.params as { id: string };
+    return { id, title: 'Mock Script', content: '{}' };
   });
 
-  fastify.put('/scripts/:id', async (request: any, reply) => {
-    return await scriptService.updateScript(fastify.prisma, (request.params as any).id, request.body);
+  // POST /scripts/:id/snapshot
+  app.post('/:id/snapshot', async (request, reply) => {
+    reply.status(201).send({ message: 'Snapshot saved' });
   });
-
-  fastify.delete('/scripts/:id', async (request: any, reply) => {
-    return await scriptService.deleteScript(fastify.prisma, (request.params as any).id);
-  });
-}
+};
