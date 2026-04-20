@@ -1,18 +1,21 @@
 import { useState } from 'react';
-import { useRegister, useLogin } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useLogin, useRegister } from '../hooks/useAuth';
 
-export default function AuthPage() {
+export function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const register = useRegister();
-  const login = useLogin();
+  const [name, setName] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const login = useLogin();
+  const register = useRegister();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     try {
       if (isLogin) {
         await login.mutateAsync({ email, password });
@@ -20,24 +23,27 @@ export default function AuthPage() {
         await register.mutateAsync({ name, email, password });
       }
       navigate('/');
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      setError(isLogin ? 'Invalid email or password' : (err.response?.data?.message || 'Registration failed'));
     }
   };
 
   return (
-    <div className=\"flex min-h-screen items-center justify-center bg-gray-50\">
-      <form onSubmit={handleSubmit} className=\"w-full max-w-sm rounded bg-white p-8 shadow\">
-        <h2 className=\"mb-6 text-2xl\">{isLogin ? 'Sign In' : 'Create Account'}</h2>
-        {!isLogin && <input className=\"mb-4 w-full border p-2\" placeholder=\"Name\" value={name} onChange={e => setName(e.target.value)} />}
-        <input className=\"mb-4 w-full border p-2\" type=\"email\" placeholder=\"Email\" value={email} onChange={e => setEmail(e.target.value)} required />
-        <input className=\"mb-4 w-full border p-2\" type=\"password\" placeholder=\"Password\" value={password} onChange={e => setPassword(e.target.value)} required />
-        <button type=\"submit\" className=\"w-full rounded bg-blue-600 p-2 text-white\" disabled={login.isPending || register.isPending}>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+      <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded shadow-md w-96">
+        <h2 className="text-2xl mb-4">{isLogin ? 'Sign In' : 'Create Account'}</h2>
+        {!isLogin && (
+          <input type="text" placeholder="Name" value={name} onChange={e => setName(e.target.value)} className="w-full p-2 mb-4 bg-gray-700 rounded" />
+        )}
+        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-2 mb-4 bg-gray-700 rounded" required />
+        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-2 mb-4 bg-gray-700 rounded" required minLength={8} />
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <button type="submit" className="w-full bg-blue-600 p-2 rounded" disabled={login.isPending || register.isPending}>
           {login.isPending || register.isPending ? 'Loading...' : (isLogin ? 'Sign In' : 'Create Account')}
         </button>
-        <button type=\"button\" className=\"mt-4 w-full text-blue-600\" onClick={() => setIsLogin(!isLogin)}>
-          {isLogin ? \"Don't have an account? Register\" : 'Already have an account? Sign in'}
-        </button>
+        <p className="mt-4 text-center cursor-pointer text-blue-400" onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? "Don't have an account? Register" : "Already have an account? Sign in"}
+        </p>
       </form>
     </div>
   );

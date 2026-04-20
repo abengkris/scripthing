@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import AuthPage from './auth';
+import { AuthPage } from './auth';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 
 export function AppRoutes() {

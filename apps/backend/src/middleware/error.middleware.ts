@@ -1,28 +1,34 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { ZodError } from 'zod';
+import { AppError } from './error.middleware';
+
+export const errorMiddleware = (fastify: FastifyInstance) => {
+  fastify.setErrorHandler((error, request, reply) => {
+    if (error instanceof ZodError) {
+      return reply.status(400).send({
+        statusCode: 400,
+        message: 'Validation error',
+        errors: error.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
+      });
+    }
+
+    if (error instanceof AppError) {
+      return reply.status(error.statusCode).send({
+        statusCode: error.statusCode,
+        message: error.message
+      });
+    }
+
+    request.log.error(error);
+    reply.status(500).send({
+      statusCode: 500,
+      message: 'Internal server error'
+    });
+  });
+};
 
 export class AppError extends Error {
   constructor(public statusCode: number, message: string) {
     super(message);
-    this.name = 'AppError';
   }
 }
-
-export const setupErrorMiddleware = (app: FastifyInstance) => {
-  app.setErrorHandler((error: Error, _request: FastifyRequest, reply: FastifyReply) => {
-    // If it's a Fastify default error (like 404), return it as is or handle specifically
-    const statusCode = (error as any).statusCode || 500;
-    
-    if (statusCode >= 400 && statusCode < 500) {
-      reply.status(statusCode).send({ error: error.message });
-      return;
-    }
-
-    if (error instanceof AppError) {
-      reply.status(error.statusCode).send({ error: error.message });
-      return;
-    }
-
-    app.log.error(error);
-    reply.status(500).send({ error: 'Internal Server Error' });
-  });
-};
