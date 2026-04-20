@@ -13,9 +13,9 @@
 - [x] Task: Conductor - User Manual Verification 'Core Infrastructure & Error Handling' (Protocol in workflow.md) [checkpoint: 432dd5a]
 
 ## Phase 3: Service Layer Implementation
-- [~] Task: Implement Auth Service
-    - [ ] Add JWT handling and password hashing
-    - [ ] Create auth routes (register, login)
+- [x] Task: Implement Auth Service [9a31b39]
+    - [x] Add JWT handling and password hashing
+    - [x] Create auth routes (register, login) (pending)
 - [ ] Task: Implement Project Service
     - [ ] Create project CRUD routes
 - [ ] Task: Implement Script Service
