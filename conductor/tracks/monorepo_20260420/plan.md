@@ -6,6 +6,6 @@
 - [x] Task: Initialize apps/ and packages/ directory structures. e9bcd2d
 
 ## Phase 2: Package Standardization
-- [ ] Task: Create root-level scripts for build and dev.
+- [~] Task: Create root-level scripts for build and dev.
 - [ ] Task: Validate dependency management across workspace.
 - [ ] Task: Verify adherence to Node 20.x requirements.
