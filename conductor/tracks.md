@@ -11,3 +11,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Core foundation: Backend setup (Fastify + Prisma + SQLite)**
 
+
+---
+
+- [ ] **Track: Implement Authentication (register, login, JWT) for the ScriptWriter App.**
+*Link: [./tracks/authentication_20260420/](./tracks/authentication_20260420/)*
