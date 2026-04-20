@@ -9,6 +9,14 @@ export class AppError extends Error {
 
 export const setupErrorMiddleware = (app: FastifyInstance) => {
   app.setErrorHandler((error: Error, _request: FastifyRequest, reply: FastifyReply) => {
+    // If it's a Fastify default error (like 404), return it as is or handle specifically
+    const statusCode = (error as any).statusCode || 500;
+    
+    if (statusCode >= 400 && statusCode < 500) {
+      reply.status(statusCode).send({ error: error.message });
+      return;
+    }
+
     if (error instanceof AppError) {
       reply.status(error.statusCode).send({ error: error.message });
       return;
