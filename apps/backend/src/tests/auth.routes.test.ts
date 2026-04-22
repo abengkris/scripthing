@@ -1,30 +1,82 @@
-import { authRoutes } from '../routes/auth';
-import { buildApp } from '../app';
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
+import fastify from 'fastify';
+import authRoutes from '../routes/auth';
+
+// Mock prisma and bcrypt for route testing
+vi.mock('@prisma/client', () => {
+  const mockPrismaClient = {
+    user: {
+      findUnique: vi.fn().mockImplementation(async ({ where }) => {
+        if (where.email === 'exist@example.com') {
+          return { id: 'user-id', email: 'exist@example.com', name: 'Existing User', passwordHash: 'hashed' };
+        }
+        return null;
+      }),
+      create: vi.fn().mockImplementation(async ({ data }) => {
+        return { id: 'new-id', email: data.email, name: data.name, passwordHash: data.passwordHash };
+      }),
+    },
+  };
+  return {
+    PrismaClient: class {
+      user = mockPrismaClient.user;
+    }
+  };
+});
+
+vi.mock('bcryptjs', () => ({
+  default: {
+    hash: vi.fn().mockResolvedValue('hashed'),
+    compare: vi.fn().mockResolvedValue(true),
+  }
+}));
 
 describe('Auth Routes', () => {
-  const app = buildApp();
+  let app: any;
 
   beforeAll(async () => {
-    await app.register(authRoutes, { prefix: '/auth' });
+    app = fastify();
+    // Assuming auth plugin is just standard routes for now
+    await app.register(authRoutes, { prefix: '/api/v1/auth' });
   });
 
-  it('should register a user', async () => {
+  it('should register a new user successfully', async () => {
     const res = await app.inject({
       method: 'POST',
-      url: '/auth/register',
-      payload: { email: 'test@example.com', password: 'password123' },
+      url: '/api/v1/auth/register',
+      payload: { email: 'new@example.com', password: 'password123', name: 'New User' },
     });
+    
     expect(res.statusCode).toBe(201);
+    const body = JSON.parse(res.payload);
+    expect(body.success).toBe(true);
+    expect(body.data).toHaveProperty('accessToken');
+    expect(body.data).toHaveProperty('refreshToken');
+    expect(body.data.user).toHaveProperty('email', 'new@example.com');
   });
 
-  it('should login a user', async () => {
+  it('should login an existing user', async () => {
     const res = await app.inject({
       method: 'POST',
-      url: '/auth/login',
-      payload: { email: 'test@example.com', password: 'password123' },
+      url: '/api/v1/auth/login',
+      payload: { email: 'exist@example.com', password: 'password123' },
     });
+    
     expect(res.statusCode).toBe(200);
-    expect(JSON.parse(res.payload)).toHaveProperty('token');
+    const body = JSON.parse(res.payload);
+    expect(body.success).toBe(true);
+    expect(body.data).toHaveProperty('accessToken');
+    expect(body.data).toHaveProperty('refreshToken');
+    expect(body.data.user).toHaveProperty('email', 'exist@example.com');
+  });
+
+  it('should fail registration with invalid input', async () => {
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/register',
+      payload: { email: 'not-an-email', password: 'short' },
+    });
+    
+    expect(res.statusCode).toBe(400);
   });
 });
