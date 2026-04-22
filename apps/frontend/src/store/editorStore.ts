@@ -21,7 +21,7 @@ interface EditorState {
   setIsDirty: (isDirty: boolean) => void;
 
   initQueue: () => Promise<void>;
-  addToQueue: (scriptId: string, content: unknown) => Promise<void>;
+  addToQueue: (scriptId: string, content: unknown) => Promise<string>;
   removeFromQueue: (id: string) => Promise<void>;
 }
 
@@ -47,6 +47,7 @@ export const useEditorStore = create<EditorState>((set) => ({
       offlineQueue: [...state.offlineQueue, newItem],
       isDirty: true,
     }));
+    return id;
   },
 
   removeFromQueue: async (id) => {

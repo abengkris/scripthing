@@ -2,11 +2,20 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { ScreenplayExtensions } from "./extensions";
 import "./Editor.css";
+import { useAutoSave } from "../../hooks/useAutoSave";
+import { useParams } from "react-router-dom";
 
 const Editor = () => {
+  const { id } = useParams<{ id: string }>();
+  const autoSave = useAutoSave(id);
+
   const editor = useEditor({
     extensions: [StarterKit, ...ScreenplayExtensions],
     content: "<p>Start writing your screenplay...</p>",
+    onUpdate: ({ editor }) => {
+      const json = editor.getJSON();
+      autoSave(json);
+    },
     editorProps: {
       attributes: {
         class:
