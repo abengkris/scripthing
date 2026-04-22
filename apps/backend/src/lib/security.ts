@@ -1,4 +1,5 @@
-import crypto, { Buffer } from "buffer";
+import crypto from "node:crypto";
+import { Buffer } from "node:buffer";
 import { config } from "../config";
 
 const ALGORITHM = "aes-256-gcm";
