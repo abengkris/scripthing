@@ -3,7 +3,7 @@
 ## Phase 1: Security Headers & Observability
 - [x] Install `@fastify/helmet` and update backend dependencies. 42361aa
 - [x] Register `fastify-helmet` in the Fastify app. a95fee3
-- [ ] Configure `pino` for structured, asynchronous logging.
+- [x] Configure `pino` for structured, asynchronous logging. 86bf751
 - [ ] Implement privacy-filtering middleware to ensure no PII/secrets are logged.
 - [ ] Conductor - User Manual Verification 'Security Headers & Observability' (Protocol in workflow.md)
 
