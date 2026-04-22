@@ -23,7 +23,7 @@ Focuses on the core AI provider logic, model support, and secure API key managem
     - [x] Implement AI controller with SSE support for `/ai/chat`
     - [x] Set up rate-limiting for AI endpoints
     - [x] Verify non-buffering SSE output in backend
-- [ ] Task: Conductor - User Manual Verification 'AI Provider Infrastructure & Backend' (Protocol in workflow.md) [checkpoint: ]
+- [x] Task: Conductor - User Manual Verification 'AI Provider Infrastructure & Backend' (Protocol in workflow.md) [checkpoint: 3acec12]
 
 ## Phase 2: Frontend AI Integration (Frontend)
 Focuses on the AI Sidebar, SSE streaming client, and interactive UI elements.
