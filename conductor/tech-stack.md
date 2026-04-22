@@ -13,6 +13,8 @@
 | React Router | Client-side routing |
 | Radix UI | Headless UI components |
 | Lucide React | Icon set |
+| idb | IndexedDB persistence |
+| lodash.debounce | Performance optimization for auto-save |
 
 ## Backend
 | Technology | Purpose |

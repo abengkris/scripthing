@@ -6,6 +6,7 @@ To provide a distraction-free, professional-grade screenplay writing experience 
 
 ## Goals
 - Professional-grade formatting (Scene Heading, Action, Character, Dialogue, etc.).
+- Robust auto-save and offline synchronization with local-first persistence.
 - Local-first architecture using a SQLite database.
 - Seamless AI integration (Chat, Suggest, Rewrite) for an optional writing boost.
 - High-quality exports (PDF, Final Draft .fdx).
