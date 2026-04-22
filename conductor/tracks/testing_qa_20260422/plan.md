@@ -27,14 +27,14 @@
     - [x] Mock external API calls
 - [x] Task: Conductor - User Manual Verification 'Backend Tests' (Protocol in workflow.md) 9d283e9
 
-## Phase 3: Frontend Unit & Integration Tests
-- [ ] Task: Implement tests for Global Store (Zustand)
-    - [ ] Test auth state, project state, and auto-save queue
-- [ ] Task: Implement tests for API Client & Interceptors
-    - [ ] Test 401 interceptor and refresh logic
-- [ ] Task: Implement tests for Editor Components
-    - [ ] Test Tiptap custom extensions in isolation
-- [ ] Task: Conductor - User Manual Verification 'Frontend Tests' (Protocol in workflow.md)
+## Phase 3: Frontend Unit & Integration Tests [checkpoint: e577539]
+- [x] Task: Implement tests for Global Store (Zustand) e577539
+    - [x] Test auth state, project state, and auto-save queue
+- [x] Task: Implement tests for API Client & Interceptors e577539
+    - [x] Test 401 interceptor and refresh logic
+- [x] Task: Implement tests for Editor Components e577539
+    - [x] Test Tiptap custom extensions in isolation
+- [x] Task: Conductor - User Manual Verification 'Frontend Tests' (Protocol in workflow.md) e577539
 
 ## Phase 4: Playwright E2E Tests
 - [ ] Task: Critical Path 1 - Editor Auto-Save & Offline Recovery
