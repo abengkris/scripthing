@@ -3,7 +3,7 @@
 ## Frontend
 | Technology | Purpose |
 |---|---|
-| React | UI framework |
+| shadcn/ui | Component library (Radix UI + Tailwind, copied into repo |
 | TypeScript | Type safety |
 | Vite | Build tool & dev server |
 | TailwindCSS | Styling |
@@ -11,7 +11,6 @@
 | Zustand | Global state management |
 | React Query | Server state & API caching |
 | React Router | Client-side routing |
-| Radix UI | Headless UI components |
 | Lucide React | Icon set |
 | idb | IndexedDB persistence |
 | lodash.debounce | Performance optimization for auto-save |

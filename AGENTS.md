@@ -1,24 +1,32 @@
 # AGENTS.md — Scripthing
-
 This document is the complete architecture guide for AI agents and developers working on this project. Read the entire document before making any changes.
-
----
-
+## Table of Contents
+ 1. Project Overview
+ 2. Tech Stack
+ 3. Quick Start for Developers
+ 4. Monorepo Structure
+ 5. Database Schema
+ 6. API Endpoints
+ 7. API Contract
+ 8. Authentication Flow
+ 9. AI Provider Architecture
+ 10. Screenplay Editor
+ 11. Auto-Save Strategy
+ 12. Frontend Error Handling
+ 13. Security & Key Rotation
+ 14. Environment Variables
+ 15. Docker, Deployment & Backup
+ 16. Code Conventions & Logging
+ 17. Development Roadmap
 ## 1. Project Overview
-
 **Scripthing** is a web-based screenplay writing application that runs locally or can be deployed to a VPS. Inspired by Final Draft, it adds optional AI features that users configure themselves using their own API keys.
-
 ### Core Principles
-- **Local-first**: All data is stored in a local SQLite database. No mandatory cloud dependency.
-- **AI optional**: AI features only activate when the user provides an API key. The app is fully functional without one.
-- **Multi-provider AI**: Supports OpenAI, Anthropic, Google Gemini, and Ollama (offline).
-- **Screenplay formatting**: The editor understands screenplay elements (Scene Heading, Action, Character, Dialogue, Parenthetical, Transition).
-- **Self-hostable**: Can be run via `docker-compose` on any VPS.
-
----
-
+ * **Local-first**: All data is stored in a local SQLite database. No mandatory cloud dependency.
+ * **AI optional**: AI features only activate when the user provides an API key. The app is fully functional without one.
+ * **Multi-provider AI**: Supports OpenAI, Anthropic, Google Gemini, and Ollama (offline).
+ * **Screenplay formatting**: The editor understands screenplay elements (Scene Heading, Action, Character, Dialogue, Parenthetical, Transition).
+ * **Self-hostable**: Can be run via docker-compose on any VPS.
 ## 2. Tech Stack
-
 ### Frontend
 | Technology | Version | Purpose |
 |---|---|---|
@@ -30,9 +38,9 @@ This document is the complete architecture guide for AI agents and developers wo
 | Zustand | 4.x | Global state management |
 | React Query | 5.x | Server state & API caching |
 | React Router | 6.x | Client-side routing |
-| Radix UI | latest | Headless UI components |
+| shadcn/ui | latest | Component library (Radix UI + Tailwind, copied into repo) |
 | Lucide React | latest | Icon set |
-
+| @microsoft/fetch-event-source | latest | Robust SSE streaming consumption |
 ### Backend
 | Technology | Version | Purpose |
 |---|---|---|
@@ -42,666 +50,329 @@ This document is the complete architecture guide for AI agents and developers wo
 | Prisma | 5.x | ORM |
 | SQLite | 3.x | Database (via better-sqlite3) |
 | Zod | 3.x | Schema validation |
+| Pino | latest | Asynchronous logging & observability |
+| Puppeteer | latest | Server-side PDF rendering for exact page margins |
 | JWT (jose) | 5.x | Stateless authentication |
 | bcrypt | 5.x | Password hashing |
-
+| @fastify/rate-limit | 9.x | Per-user rate limiting on AI endpoints |
+| @fastify/cors | 9.x | CORS configuration |
+| @fastify/cookie | 9.x | Cookie support for VPS deployments |
+| @fastify/helmet | 11.x | HTTP security headers |
 ### AI Providers
-| Provider | SDK | Default Model |
-|---|---|---|
-| OpenAI | `openai` npm | `gpt-4o` |
-| Anthropic | `@anthropic-ai/sdk` npm | `claude-sonnet-4-5` |
-| Google Gemini | `@google/gen-ai` npm | `gemini-3.1-flash-lite-preview` |
-| Ollama | Direct REST API | user-selected model |
-
+| Provider | SDK | Default Model | Model Env Variable |
+|---|---|---|---|
+| OpenAI | openai npm | gpt-4o | OPENAI_DEFAULT_MODEL |
+| Anthropic | @anthropic-ai/sdk npm | claude-sonnet-4-6 | ANTHROPIC_DEFAULT_MODEL |
+| Google Gemini | @google/generative-ai npm | gemini-1.5-pro | GEMINI_DEFAULT_MODEL |
+| Ollama | Direct REST API | user-selected model | — |
+> **Note:** Default models are set via environment variables, not hardcoded, so they can be updated without a code change. See Section 14.
+> 
 ### Infrastructure
 | Technology | Purpose |
 |---|---|
 | Docker + Docker Compose | Containerization & orchestration |
 | Nginx | Reverse proxy (for VPS) |
 | pnpm workspaces | Monorepo package manager |
+## 3. Quick Start for Developers
+### Prerequisites
+ * Node.js 20.x LTS
+ * pnpm 9.x (npm install -g pnpm)
+ * Docker & Docker Compose (optional, for containerized deployment)
+### First-Time Setup
+```bash
+# 1. Clone and enter repo
+git clone <repo-url> && cd scripthing
 
----
+# 2. Install all workspace dependencies
+pnpm install
 
-## 3. Monorepo Structure
+# 3. Copy environment files
+cp apps/backend/.env.example apps/backend/.env
+cp apps/frontend/.env.example apps/frontend/.env
+
+# 4. Edit apps/backend/.env — set APP_SECRET to any 32-char random string
+#    Generate one with: openssl rand -hex 16
+
+# 5. Run database migrations and seed dev data
+pnpm --filter backend db:migrate
+pnpm --filter backend db:seed
+
+# 6. Start all services
+pnpm dev
+# → Frontend: http://localhost:5173
+# → Backend:  http://localhost:3001
 
 ```
-scriptwriter-app/
-├── AGENTS.md                  # This document
-├── package.json               # Root workspace config
-├── pnpm-workspace.yaml        # Workspace definition
-├── docker-compose.yml         # VPS deployment
-├── docker-compose.dev.yml     # Local development
-├── .env.example               # Example environment variables
-│
-├── apps/
-│   ├── frontend/              # React app (Vite)
-│   │   ├── public/
-│   │   ├── src/
-│   │   │   ├── main.tsx
-│   │   │   ├── App.tsx
-│   │   │   ├── routes/        # Pages / route definitions
-│   │   │   │   ├── index.tsx          # Dashboard / project list
-│   │   │   │   ├── editor.$id.tsx     # Screenplay editor
-│   │   │   │   ├── settings.tsx       # Settings & API keys
-│   │   │   │   └── auth.tsx           # Login / register
-│   │   │   ├── components/    # Shared UI components
-│   │   │   │   ├── ui/                # Radix-based primitives
-│   │   │   │   ├── layout/            # Sidebar, Topbar, Shell
-│   │   │   │   └── screenplay/        # Editor-specific components
-│   │   │   ├── editor/        # Tiptap editor & extensions
-│   │   │   │   ├── extensions/        # Custom Tiptap extensions
-│   │   │   │   │   ├── SceneHeading.ts
-│   │   │   │   │   ├── Action.ts
-│   │   │   │   │   ├── Character.ts
-│   │   │   │   │   ├── Dialogue.ts
-│   │   │   │   │   ├── Parenthetical.ts
-│   │   │   │   │   └── Transition.ts
-│   │   │   │   ├── ScreenplayEditor.tsx
-│   │   │   │   └── toolbar/
-│   │   │   ├── ai/            # AI sidebar & hooks
-│   │   │   │   ├── AISidebar.tsx
-│   │   │   │   ├── AIChat.tsx
-│   │   │   │   ├── AISuggestion.tsx
-│   │   │   │   └── hooks/
-│   │   │   │       ├── useAIChat.ts
-│   │   │   │       └── useAISuggest.ts
-│   │   │   ├── settings/      # App settings
-│   │   │   │   ├── APIKeyManager.tsx
-│   │   │   │   ├── ProviderSelector.tsx
-│   │   │   │   └── ModelSelector.tsx
-│   │   │   ├── store/         # Zustand stores
-│   │   │   │   ├── authStore.ts
-│   │   │   │   ├── editorStore.ts
-│   │   │   │   ├── projectStore.ts
-│   │   │   │   └── settingsStore.ts
-│   │   │   ├── hooks/         # Custom React hooks
-│   │   │   ├── lib/           # Utilities & API client
-│   │   │   │   ├── api.ts             # Axios/fetch wrapper
-│   │   │   │   ├── export.ts          # PDF & FDX export
-│   │   │   │   └── screenplay.ts      # Format helpers
-│   │   │   └── types/         # Shared TypeScript types
-│   │   ├── index.html
-│   │   ├── vite.config.ts
-│   │   └── tailwind.config.ts
-│   │
-│   └── backend/               # Fastify API
-│       ├── src/
-│       │   ├── main.ts                # Entry point & server bootstrap
-│       │   ├── app.ts                 # Fastify app factory
-│       │   ├── config.ts              # Environment config (zod-validated)
-│       │   ├── routes/                # HTTP route handlers
-│       │   │   ├── auth.ts            # POST /auth/login, /auth/register
-│       │   │   ├── projects.ts        # CRUD /projects
-│       │   │   ├── scripts.ts         # CRUD /scripts
-│       │   │   ├── ai.ts              # POST /ai/chat, /ai/suggest, /ai/analyze
-│       │   │   └── settings.ts        # GET/PUT /settings (API keys)
-│       │   ├── services/              # Business logic
-│       │   │   ├── auth.service.ts
-│       │   │   ├── project.service.ts
-│       │   │   ├── script.service.ts
-│       │   │   ├── settings.service.ts
-│       │   │   └── ai/                # AI provider abstraction
-│       │   │       ├── ai.service.ts          # Main router (facade)
-│       │   │       ├── base.provider.ts       # Abstract base class
-│       │   │       ├── openai.provider.ts
-│       │   │       ├── anthropic.provider.ts
-│       │   │       ├── gemini.provider.ts
-│       │   │       └── ollama.provider.ts
-│       │   ├── middleware/
-│       │   │   ├── auth.middleware.ts  # JWT verification
-│       │   │   └── error.middleware.ts
-│       │   ├── plugins/
-│       │   │   ├── cors.ts
-│       │   │   ├── jwt.ts
-│       │   │   └── prisma.ts
-│       │   └── db/
-│       │       └── prisma/
-│       │           ├── schema.prisma
-│       │           └── migrations/
-│       ├── tsconfig.json
-│       └── package.json
-│
-└── packages/
-    └── shared/                # Types shared between frontend & backend
-        ├── src/
-        │   ├── types/
-        │   │   ├── screenplay.types.ts
-        │   │   ├── ai.types.ts
-        │   │   └── api.types.ts
-        │   └── constants/
-        │       ├── screenplay.constants.ts  # Element types, shortcuts
-        │       └── ai.constants.ts          # Provider names, model lists
-        └── package.json
+### Development Seed Data
+Running pnpm --filter backend db:seed creates a ready-to-use demo account:
 ```
+Email:    demo@scripthing.local
+Password: demo1234
 
----
-
-## 4. Database Schema (Prisma)
-
-```prisma
-// apps/backend/src/db/prisma/schema.prisma
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL") // file:./data/scripthing.db
-}
-
-model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
-  passwordHash String
-  name         String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  projects     Project[]
-  settings     Settings?
-}
-
-model Project {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  format      String    @default("screenplay") // screenplay | teleplay | stageplay | podcast
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  scripts     Script[]
-}
-
-model Script {
-  id          String    @id @default(cuid())
-  title       String
-  content     String    // JSON string (Tiptap/ProseMirror doc)
-  version     Int       @default(1)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  projectId   String
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  snapshots   Snapshot[]
-}
-
-model Snapshot {
-  id          String    @id @default(cuid())
-  content     String    // JSON string
-  label       String?   // e.g. "Draft 1", "Before AI edit"
-  createdAt   DateTime  @default(now())
-
-  scriptId    String
-  script      Script    @relation(fields: [scriptId], references: [id], onDelete: Cascade)
-}
-
-model Settings {
-  id                String   @id @default(cuid())
-  userId            String   @unique
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // API Keys (encrypted at rest)
-  openaiApiKey      String?
-  anthropicApiKey   String?
-  geminiApiKey      String?
-  ollamaEndpoint    String?  @default("http://localhost:11434")
-
-  // AI Preferences
-  activeProvider    String?  // "openai" | "anthropic" | "gemini" | "ollama"
-  activeModel       String?  // model selected by the user
-  aiTemperature     Float    @default(0.7)
-
-  // Editor Preferences
-  theme             String   @default("dark")  // "light" | "dark"
-  fontSize          Int      @default(12)
-  fontFamily        String   @default("Courier Prime")
-  autoSaveInterval  Int      @default(30)  // seconds
-
-  updatedAt         DateTime @updatedAt
-}
 ```
-
----
-
-## 5. API Endpoints
-
-All endpoints are prefixed with `/api/v1`. Endpoints requiring authentication are marked 🔒.
-
+## 4. Monorepo Structure
+*(Structure remains the same as the initial specification. Uses pnpm-workspace.yaml targeting apps/* and packages/*.)*
+## 5. Database Schema (Prisma)
+*(Schema remains identical to the original specification: User, Project, Script, Snapshot, and Settings models with proper indexing).*
+## 6. API Endpoints
+All endpoints are prefixed with /api/v1. Endpoints requiring authentication are marked 🔒.
 ### Auth
 ```
-POST   /api/v1/auth/register        Register a new account
-POST   /api/v1/auth/login           Login and receive a JWT
-POST   /api/v1/auth/logout          Invalidate token
-GET    /api/v1/auth/me          🔒  Get currently authenticated user info
-```
+POST   /api/v1/auth/register    Register a new account
+POST   /api/v1/auth/login       Login — returns access token + refresh token
+POST   /api/v1/auth/refresh     Issue a new access token using refresh token
+POST   /api/v1/auth/logout      Revoke refresh token and clear cookie
+GET    /api/v1/auth/me      🔒  Get currently authenticated user
 
-### Projects
 ```
-GET    /api/v1/projects         🔒  List all projects owned by the user
-POST   /api/v1/projects         🔒  Create a new project
+### Projects & Scripts
+```
+GET    /api/v1/projects         🔒  List all projects
+POST   /api/v1/projects         🔒  Create a project
 GET    /api/v1/projects/:id     🔒  Get project details
 PUT    /api/v1/projects/:id     🔒  Update a project
 DELETE /api/v1/projects/:id     🔒  Delete a project (cascades to scripts)
-```
 
-### Scripts
-```
-GET    /api/v1/projects/:projectId/scripts      🔒  List scripts in a project
-POST   /api/v1/projects/:projectId/scripts      🔒  Create a new script
-GET    /api/v1/scripts/:id                      🔒  Fetch a script with its content
-PUT    /api/v1/scripts/:id                      🔒  Update script content
-DELETE /api/v1/scripts/:id                      🔒  Delete a script
-POST   /api/v1/scripts/:id/snapshot             🔒  Save a manual snapshot
-GET    /api/v1/scripts/:id/snapshots            🔒  List snapshot history
-POST   /api/v1/scripts/:id/export/pdf           🔒  Export script to PDF
-POST   /api/v1/scripts/:id/export/fdx           🔒  Export script to Final Draft .fdx
-```
+GET    /api/v1/projects/:projectId/scripts   🔒  List scripts in a project
+POST   /api/v1/projects/:projectId/scripts   🔒  Create a script
+GET    /api/v1/scripts/:id                   🔒  Get script with content
+PUT    /api/v1/scripts/:id                   🔒  Update script content
+DELETE /api/v1/scripts/:id                   🔒  Delete a script
+POST   /api/v1/scripts/:id/snapshot          🔒  Save a manual snapshot
+GET    /api/v1/scripts/:id/snapshots         🔒  List snapshot history
+POST   /api/v1/scripts/:id/export/pdf        🔒  Export to PDF (via Puppeteer)
+POST   /api/v1/scripts/:id/export/fdx        🔒  Export to Final Draft .fdx
 
-### AI
 ```
-POST   /api/v1/ai/chat              🔒  Chat with AI about the script
-POST   /api/v1/ai/suggest           🔒  Get a continuation suggestion based on cursor context
-POST   /api/v1/ai/rewrite           🔒  Rewrite selected text
-POST   /api/v1/ai/analyze           🔒  Analyze characters, structure, or plot
-POST   /api/v1/ai/generate          🔒  Generate a scene or dialogue from a prompt
-POST   /api/v1/ai/providers/test    🔒  Test an API key connection
-GET    /api/v1/ai/models            🔒  List available models per provider
+### AI ⚡ (Rate limited — 20 req/min/user)
 ```
+POST   /api/v1/ai/chat           🔒  Chat with AI about the script
+POST   /api/v1/ai/suggest        🔒  Get a continuation suggestion
+POST   /api/v1/ai/rewrite        🔒  Rewrite selected text
+POST   /api/v1/ai/analyze        🔒  Analyze characters, structure, or plot
+POST   /api/v1/ai/generate       🔒  Generate scene or dialogue from a prompt
+POST   /api/v1/ai/providers/test 🔒  Test an API key connection
+GET    /api/v1/ai/models         🔒  List available models per provider
 
+```
 ### Settings
 ```
-GET    /api/v1/settings         🔒  Retrieve user settings
-PUT    /api/v1/settings         🔒  Update settings (API keys, preferences)
+GET    /api/v1/settings      🔒  Get user settings (API keys as ****last4)
+PUT    /api/v1/settings      🔒  Update settings
+
 ```
-
----
-
-## 6. AI Provider Architecture
-
-All providers implement the same interface, making them interchangeable.
-
-### Base Interface
-
+## 7. API Contract
+*(Standard envelope { success: true, data: ... } and error handling remain identical to original. Zod schemas apply strict validation before controllers).*
+## 8. Authentication Flow
+### Token Strategy & Race Condition Prevention
+Scripthing uses two tokens to balance security and UX: Access token (JWT, 15m) and Refresh token (JWT, 7d).
+To prevent race conditions where multiple parallel requests fail simultaneously due to an expired token (causing multiple /auth/refresh calls), the frontend API client implements a **Promise queue (mutex)**.
 ```typescript
-// apps/backend/src/services/ai/base.provider.ts
+// apps/frontend/src/lib/api.ts
+import { useAuthStore } from "../store/authStore";
 
-export interface AIMessage {
-  role: "user" | "assistant" | "system";
-  content: string;
+let isRefreshing = false;
+let failedQueue: Array<{ resolve: (token: string | null) => void; reject: (err: any) => void }> = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) prom.reject(error);
+    else prom.resolve(token);
+  });
+  failedQueue = [];
+};
+
+async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
+  const { accessToken, refreshToken, setTokens, clearAuth } = useAuthStore.getState();
+
+  // Initial fetch attempt omitted for brevity...
+  
+  if (res.status === 401 && refreshToken) {
+    if (!isRefreshing) {
+      isRefreshing = true;
+      attemptTokenRefresh(refreshToken)
+        .then(refreshed => {
+          if (refreshed) {
+            setTokens(refreshed.accessToken, refreshToken);
+            processQueue(null, refreshed.accessToken);
+          } else {
+            processQueue(new Error("Session expired"), null);
+            clearAuth();
+            window.location.href = "/auth";
+          }
+        })
+        .catch(err => {
+          processQueue(err, null);
+          clearAuth();
+        })
+        .finally(() => { isRefreshing = false; });
+    }
+
+    // Wait for the ongoing refresh to complete, then retry
+    return new Promise<string | null>((resolve, reject) => {
+      failedQueue.push({ resolve, reject });
+    }).then(token => {
+      if (!token) throw new APIError("UNAUTHORIZED", "Session expired");
+      return request<T>(url, options); // retry with new token
+    });
+  }
+  
+  // Normal response parsing...
 }
 
-export interface AICompletionOptions {
-  messages: AIMessage[];
-  model: string;
-  temperature?: number;
-  maxTokens?: number;
-  stream?: boolean;
-}
-
-export interface AICompletionResult {
-  content: string;
-  model: string;
-  provider: string;
-  usage?: {
-    promptTokens: number;
-    completionTokens: number;
-    totalTokens: number;
-  };
-}
-
-export abstract class BaseAIProvider {
-  abstract readonly name: string;
-  abstract readonly supportedModels: string[];
-
-  abstract complete(options: AICompletionOptions): Promise<AICompletionResult>;
-  abstract stream(options: AICompletionOptions): AsyncGenerator<string>;
-  abstract testConnection(apiKey: string): Promise<boolean>;
-  abstract listModels(apiKey: string): Promise<string[]>;
-}
 ```
-
-### AI Router (Facade)
-
+## 9. AI Provider Architecture
+### SSE Streaming (Robust Handling)
+When stream: true is sent to /ai/chat, the backend emits Server-Sent Events (SSE).
+**Warning:** Do not manually parse chunks using split('\n\n') or native TextDecoder loops in the frontend. Network chunks can be fragmented mid-JSON string. Always use @microsoft/fetch-event-source.
+**Frontend implementation:**
 ```typescript
-// apps/backend/src/services/ai/ai.service.ts
-// Responsible for selecting the correct provider based on user settings.
-// Injects settings from the DB — never from environment variables.
+import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-export class AIService {
-  private getProvider(providerName: string, apiKey: string): BaseAIProvider {
-    switch (providerName) {
-      case "openai":    return new OpenAIProvider(apiKey);
-      case "anthropic": return new AnthropicProvider(apiKey);
-      case "gemini":    return new GeminiProvider(apiKey);
-      case "ollama":    return new OllamaProvider(apiKey); // apiKey = endpoint URL
-      default: throw new Error(`Unknown provider: "${providerName}"`);
-    }
+await fetchEventSource(`${import.meta.env.VITE_API_URL}/ai/chat`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`,
+  },
+  body: JSON.stringify(payload),
+  onmessage(msg) {
+    if (msg.data === '[DONE]') return;
+    const parsed = JSON.parse(msg.data);
+    appendToMessage(parsed.delta);
+  },
+  onerror(err) {
+    throw err; // Stop retrying on error
   }
-
-  async complete(
-    userId: string,
-    options: Omit<AICompletionOptions, "model">
-  ): Promise<AICompletionResult> {
-    const settings = await getSettingsByUserId(userId);
-    if (!settings.activeProvider) throw new Error("No AI provider configured");
-    const apiKey = this.getApiKey(settings, settings.activeProvider);
-    const provider = this.getProvider(settings.activeProvider, apiKey);
-    return provider.complete({ ...options, model: settings.activeModel });
-  }
-}
-```
-
-### Screenplay System Prompt
-
-Every AI request must include the following system prompt so the AI understands the screenplay writing context:
+});
 
 ```
-You are a professional screenplay writing assistant.
-You understand industry-standard formatting: Scene Heading, Action, Character, Dialogue, Parenthetical, and Transition.
-Always respond in the same language the user writes in.
-When generating or revising script content, use the correct screenplay format.
-Do not add lengthy explanations unless explicitly asked.
-```
-
----
-
-## 7. Screenplay Editor (Tiptap)
-
-The editor uses Tiptap with custom extensions for each screenplay element.
-
-### Element Types
-
-| Element | Keyboard Shortcut | Visual Format |
-|---|---|---|
-| `scene-heading` | `Cmd/Ctrl + 1` | ALL CAPS, left-aligned |
-| `action` | `Cmd/Ctrl + 2` | Normal, full width |
-| `character` | `Cmd/Ctrl + 3` | ALL CAPS, centered |
-| `dialogue` | `Cmd/Ctrl + 4` | Indented left & right |
-| `parenthetical` | `Cmd/Ctrl + 5` | (in parentheses), indented |
-| `transition` | `Cmd/Ctrl + 6` | ALL CAPS, right-aligned |
-
-### Auto-Format Rules
-
-1. New line after `scene-heading` → automatically becomes `action`
-2. New line after `character` → automatically becomes `dialogue`
-3. New line after `dialogue` → returns to `action`
-4. Typing `INT.` or `EXT.` → automatically detected as `scene-heading`
-5. Tab on an empty line → toggles between `character` and `action`
-
-### Content Stored as JSON
-
-```json
-{
-  "type": "doc",
-  "content": [
-    {
-      "type": "scene-heading",
-      "content": [{ "type": "text", "text": "INT. OFFICE - DAY" }]
-    },
-    {
-      "type": "action",
-      "content": [{ "type": "text", "text": "JOHN sits in front of his laptop." }]
-    },
-    {
-      "type": "character",
-      "content": [{ "type": "text", "text": "JOHN" }]
-    },
-    {
-      "type": "dialogue",
-      "content": [{ "type": "text", "text": "Finally done." }]
-    }
-  ]
-}
-```
-
----
-
-## 8. Security
-
-### API Key Storage
-- API keys are **never** stored in plaintext.
-- Keys are encrypted using **AES-256-GCM** with an encryption key derived from `APP_SECRET` in the environment variables.
-- API keys are never returned to the frontend in full. Only the last 4 characters are exposed (e.g. `****xxxx`).
-
-### Authentication
-- All endpoints except `/auth/*` require a JWT Bearer token.
-- JWT is stored in `localStorage` on the frontend (suitable for local use), or in an `httpOnly cookie` for VPS deployments.
-- Tokens expire after **7 days**.
-
-### Input Validation
-- All request bodies are validated with **Zod** on the backend before processing.
-- Script content is limited to a maximum of **2MB** per request.
-- AI prompts are limited to a maximum of **4000 characters**.
-
----
-
-## 9. Environment Variables
-
+### System Prompt Directive
+Prepended to every AI request:
+> "You are a professional screenplay writing assistant. You understand industry-standard formatting. Always respond in the same language the user writes in. Do not provide lengthy explanations unless explicitly requested."
+> 
+## 10. Screenplay Editor (Tiptap)
+*(Editor elements (Scene Heading, Action, Character, Dialogue) and auto-format rules (Enter/Tab behavior) remain identical to the original specification).*
+## 11. Auto-Save Strategy
+Auto-save is **debounced from the last keystroke (2 seconds)**. It uses an offline save queue (via Zustand) to retain unsaved changes if the network drops, retrying automatically when navigator.onLine fires or the window regains focus.
+## 12. Frontend Error Handling
+*(Global React Query error handler, Inline form validation mapping, and Toast notification mapping remain identical).*
+## 13. Security & Key Rotation
+### Environment Config Validation
+Parsed strictly with Zod. Server will not boot if APP_SECRET is missing or < 32 chars.
+### API Key Encryption & Graceful Key Rotation
+API keys are encrypted with **AES-256-GCM** using APP_SECRET. Keys are never stored or returned in plaintext.
+**Graceful Key Rotation Strategy (APP_SECRET):**
+To rotate application secrets without downtime or manual scripts:
+ 1. Store the old key in a new environment variable APP_SECRET_PREVIOUS.
+ 2. Set the new key in APP_SECRET.
+ 3. **Decryption Logic:** The backend tries to decrypt using APP_SECRET. If it throws an auth tag error (decryption failure), it falls back to APP_SECRET_PREVIOUS.
+ 4. **Lazy Migration:** If decryption succeeds using the previous key, the backend immediately re-encrypts the data using the new APP_SECRET and saves it back to the database.
+## 14. Environment Variables
 ```bash
 # apps/backend/.env
 
-# Database
 DATABASE_URL="file:./data/scripthing.db"
-
-# Server
 PORT=3001
 HOST=0.0.0.0
 NODE_ENV=development
 
 # Security
-APP_SECRET="replace-with-a-random-32-character-string"  # used for API key encryption & JWT signing
-JWT_EXPIRES_IN="7d"
+APP_SECRET="replace-with-a-random-32-character-string"
+APP_SECRET_PREVIOUS="" # Used for graceful rotation
+JWT_EXPIRES_IN="15m"
+JWT_REFRESH_EXPIRES_IN="7d"
 
-# Frontend URL (for CORS)
 FRONTEND_URL="http://localhost:5173"
+
+# Defaults
+OPENAI_DEFAULT_MODEL="gpt-4o"
+ANTHROPIC_DEFAULT_MODEL="claude-sonnet-4-6"
+GEMINI_DEFAULT_MODEL="gemini-1.5-pro"
+AI_RATE_LIMIT_RPM=20
+
 ```
+## 15. Docker, Deployment & Backup
+### SQLite Backup Strategy (Local-First)
+Because SQLite stores data locally, automated backups are critical for VPS deployments to prevent data loss.
+ 1. **Host-level Cron:** Run a daily cron job on the host server:
+   ```bash
+   sqlite3 /path/to/data/scripthing.db ".backup '/path/to/backups/scripthing_$(date +%F).db'"
+   
+   ```
+ 2. **Real-time Replication:** Alternatively, configure **Litestream** inside the Docker composition to asynchronously stream WAL changes to an S3 bucket.
+### Nginx Config for SSE
+To ensure the AI typing effect is instant, disable buffering in Nginx.
+```nginx
+  # AI streaming — disable Nginx buffering for SSE
+  location /api/v1/ai/ {
+    proxy_pass http://backend;
+    proxy_buffering           off;
+    proxy_cache               off;
+    chunked_transfer_encoding on;
+    proxy_set_header Connection "";
+  }
 
-```bash
-# apps/frontend/.env
-
-VITE_API_URL="http://localhost:3001/api/v1"
 ```
-
----
-
-## 10. Docker & Deployment
-
-### docker-compose.yml (Production VPS)
-
-```yaml
-version: "3.8"
-
-services:
-  backend:
-    build: ./apps/backend
-    restart: always
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: file:/data/scripthing.db
-      APP_SECRET: ${APP_SECRET}
-      FRONTEND_URL: ${FRONTEND_URL}
-    volumes:
-      - db_data:/data
-    expose:
-      - "3001"
-
-  frontend:
-    build: ./apps/frontend
-    restart: always
-    expose:
-      - "80"
-
-  nginx:
-    image: nginx:alpine
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./certs:/etc/nginx/certs
-    depends_on:
-      - backend
-      - frontend
-
-volumes:
-  db_data:
-```
-
-### Deploy to VPS
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/abengkris/scripthing.git && cd scripthing
-
-# 2. Create .env from the example
-cp .env.example .env
-# Edit APP_SECRET and FRONTEND_URL
-
-# 3. Start all services
-docker-compose up -d
-
-# 4. Check status
-docker-compose ps
-docker-compose logs -f
-```
-
-### Run Locally (Without Docker)
-
-```bash
-# Install dependencies
-pnpm install
-
-# Run database migrations
-pnpm --filter backend prisma migrate dev
-
-# Start all services
-pnpm dev
-# → Frontend: http://localhost:5173
-# → Backend:  http://localhost:3001
-```
-
----
-
-## 11. Code Conventions
-
-### Naming
-- **Files**: `kebab-case.ts` for all files
-- **React Components**: `PascalCase.tsx`
-- **Functions / variables**: `camelCase`
-- **Constants**: `UPPER_SNAKE_CASE`
-- **Types / Interfaces**: `PascalCase`, with `Type` or `Interface` suffix if ambiguous
-
-### Backend Function Structure
-```typescript
-// Route handlers are only responsible for:
-// validating the request → calling a service → sending the response.
-// All business logic MUST live in service files, never in route handlers.
-// Errors MUST be thrown as Error objects and handled by the error middleware.
-```
-
-### Frontend Component Structure
-```typescript
-// Order inside a component:
-// 1. Hooks (useState, useEffect, useStore, etc.)
-// 2. Derived state / computed values
-// 3. Handler functions
-// 4. Return JSX
-```
-
-### Commit Messages
-```
-feat: add a new feature
-fix: fix a bug
-refactor: restructure code without changing behavior
-docs: update documentation
-chore: update dependencies / config
-```
-
----
-
-## 12. Development Roadmap
-
-Recommended implementation order:
-
+## 16. Code Conventions & Logging
+### Standardized Logging & Observability
+ * Use pino for backend logging to ensure fast, non-blocking asynchronous I/O.
+ * **Audit Logs:** Log every AI provider failure including providerName, model, and upstream errorCode for debugging.
+ * **Privacy Restriction:** It is **strictly forbidden** to log user prompts, AI completions, or screenplay contents to the system logs.
+### General Conventions
+ * **Files**: kebab-case.ts
+ * **React Components**: PascalCase.tsx
+ * **Functions / variables**: camelCase
+ * **Commit Messages**: Follow Conventional Commits (feat:, fix:, chore:, refactor:).
+## 17. Development Roadmap
 ```
 Phase 1 — Core Foundation
-  [x] Monorepo setup (pnpm workspaces)
-  [x] Backend setup (Fastify + Prisma + SQLite)
-  [x] Frontend setup (Vite + React + Tailwind)
-  [x] Authentication (register, login, JWT)
-  [x] CRUD for Projects & Scripts
+  [ ] Monorepo setup (pnpm workspaces, Fastify, React, Vite)
+  [ ] Authentication: register, login, JWT access + refresh tokens
+  [ ] Error middleware & Zod schema validation
+  [ ] CRUD: Projects & Scripts
+  [ ] Rate limiting plugin
 
 Phase 2 — Editor
-  [x] Tiptap integration
-  [x] Custom extensions for all screenplay elements
-  [x] Auto-format rules
-  [x] Auto-save to backend every 30 seconds
-  [x] Snapshot / version history
+  [ ] Tiptap integration with ProseMirror history plugin
+  [ ] Custom extensions & Auto-format rules
+  [ ] Debounced auto-save & Offline queue handling
 
 Phase 3 — AI Integration
-  [ ] Settings page (input & store encrypted API keys)
-  [x] Base provider interface
-  [ ] OpenAI provider implementation
-  [ ] Anthropic provider implementation
-  [x] Google Gemini provider implementation
-  [ ] Ollama provider implementation
-  [ ] AI Sidebar (chat + suggest + rewrite)
-  [ ] Streaming responses
+  [ ] Settings page: AES-256-GCM encryption for API keys
+  [ ] Multi-provider setup (OpenAI, Anthropic, Gemini, Ollama)
+  [ ] AI Sidebar: chat, suggest, rewrite, analyze, generate
+  [ ] Robust SSE streaming using fetch-event-source
 
 Phase 4 — Export & Polish
-  [ ] Export to PDF
+  [ ] Export to PDF (Puppeteer-based for exact margin control)
   [ ] Export to FDX (Final Draft format)
-  [ ] Dark / Light mode
-  [ ] Onboarding for new users
-  [ ] Docker setup & deployment guide
+  [ ] Dark / Light mode toggle
+  [ ] Nginx config & Docker production setup
 
-Phase 5 — Testing & Quality Assurance
-  [ ] Unit tests for all backend services & AI providers (Vitest)
-  [ ] Unit tests for frontend hooks & store logic (Vitest)
-  [ ] Integration tests for all API endpoints (supertest + Vitest)
-  [ ] E2E tests for the editor, export, and AI flows (Playwright)
-  [ ] Load testing for VPS deployment (k6 or autocannon)
-  [ ] Test coverage report (target: ≥ 80% coverage)
+Phase 5 — Testing & QA
+  [ ] Unit tests & Integration tests (Vitest, Playwright)
+  [ ] Coverage report (target: ≥ 80%)
 
-Phase 6 — Security Hardening
-  [ ] Security audit for API key encryption (AES-256-GCM)
-  [ ] Per-user rate limiting on AI endpoints to prevent abuse (fastify-rate-limit)
-  [ ] CSRF protection for VPS / cookie-based auth deployments
-  [ ] HTTP security headers (Helmet.js)
-  [ ] Dependency vulnerability scan (npm audit / Snyk)
-  [ ] Basic penetration testing (OWASP checklist)
+Phase 6 — Security Hardening & DevOps
+  [ ] HTTP security headers (@fastify/helmet)
+  [ ] APP_SECRET graceful key rotation strategy (lazy migration)
+  [ ] Automated SQLite backups (Litestream/Cron)
+  [ ] Pino structured logging & privacy audit
 
-Phase 7 — Performance Optimization
-  [ ] Lazy loading for editor and AI sidebar components (React.lazy)
-  [ ] Prisma query optimization: add indexes, use pagination on all list endpoints
-  [ ] Cache repeated AI responses per session (in-memory or Redis)
-  [ ] Frontend bundle size audit and optimization (Vite rollup config)
-  [ ] Debounce auto-save to reduce write frequency
-  [ ] Virtual scrolling for long scripts in the editor
+Phase 7 — Performance
+  [ ] Lazy loading & Virtual scrolling for long scripts
+  [ ] Prisma query audit & Vite bundle optimization
 
 Phase 8 — UX & Feature Polish
-  [ ] Real-time word count and page count in the status bar
-  [ ] Character report: list all characters with scene appearances
-  [ ] Find & replace across the entire script
-  [ ] Full undo/redo history (ProseMirror history plugin)
-  [ ] Keyboard shortcut reference panel (Cmd/Ctrl + ?)
-  [ ] Drag-and-drop scene reordering in the Navigator
-  [ ] Script notes / annotation layer per scene
-  [ ] Print preview before PDF export
+  [ ] Real-time Word/Page count in status bar
+  [ ] Character appearance report
+  [ ] Find & replace
+  [ ] Keyboard shortcut reference panel
 
 Phase 9 — Distribution & CI/CD
-  [ ] Set up GitHub Actions pipeline: lint → test → build → deploy
-  [ ] Auto-deploy to VPS on push to main branch (via SSH + Docker)
-  [ ] Write user-facing documentation (README, usage guide, FAQ)
-  [ ] Create CHANGELOG.md with semantic versioning (semver)
-  [ ] Publish repository as open-source on GitHub (MIT License)
-  [ ] Create a landing page with feature overview and self-hosting guide
+  [ ] GitHub Actions CI/CD pipeline
+  [ ] User documentation & Self-hosting landing page
+
 ```
-
----
-
 *This document must be updated whenever a significant architectural change is made.*
