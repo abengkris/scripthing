@@ -1,16 +1,22 @@
-import puppeteer from 'puppeteer';
+import puppeteer from "puppeteer";
 
 export interface ExportData {
   title: string;
   author?: string;
-  content: any; // This would be the Tiptap JSON or HTML
+  content: string | Record<string, unknown>; // This would be the Tiptap JSON or HTML
 }
 
 export const generatePdf = async (data: ExportData): Promise<Buffer> => {
   const browser = await puppeteer.launch({
     headless: true,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--single-process']
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--single-process",
+    ],
   });
   const page = await browser.newPage();
 
@@ -49,9 +55,9 @@ export const generatePdf = async (data: ExportData): Promise<Buffer> => {
     <body>
       <div class="page">
         <h1>${data.title}</h1>
-        ${data.author ? `<p>By ${data.author}</p>` : ''}
+        ${data.author ? `<p>By ${data.author}</p>` : ""}
         <div class="content">
-          ${typeof data.content === 'string' ? data.content : 'JSON content processing not implemented yet'}
+          ${typeof data.content === "string" ? data.content : "JSON content processing not implemented yet"}
         </div>
       </div>
     </body>
@@ -60,14 +66,14 @@ export const generatePdf = async (data: ExportData): Promise<Buffer> => {
 
   await page.setContent(htmlContent);
   const pdfBuffer = await page.pdf({
-    format: 'Letter',
+    format: "Letter",
     printBackground: true,
     margin: {
-      top: '1in',
-      bottom: '1in',
-      left: '1in',
-      right: '1in'
-    }
+      top: "1in",
+      bottom: "1in",
+      left: "1in",
+      right: "1in",
+    },
   });
 
   await browser.close();

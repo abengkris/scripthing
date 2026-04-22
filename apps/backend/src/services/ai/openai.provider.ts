@@ -1,10 +1,14 @@
-import OpenAI from 'openai';
-import { BaseAIProvider } from './base.provider';
-import { AICompletionOptions, AICompletionResult, SUPPORTED_MODELS } from './types';
+import OpenAI from "openai";
+import { BaseAIProvider } from "./base.provider";
+import {
+  AICompletionOptions,
+  AICompletionResult,
+  SUPPORTED_MODELS,
+} from "./types";
 
 export class OpenAIProvider extends BaseAIProvider {
-  readonly name = 'openai';
-  readonly supportedModels = SUPPORTED_MODELS.openai.models.map(m => m.id);
+  readonly name = "openai";
+  readonly supportedModels = SUPPORTED_MODELS.openai.models.map((m) => m.id);
   private client: OpenAI;
 
   constructor(apiKey: string) {
@@ -15,7 +19,7 @@ export class OpenAIProvider extends BaseAIProvider {
   async complete(options: AICompletionOptions): Promise<AICompletionResult> {
     const response = await this.client.chat.completions.create({
       model: options.model,
-      messages: options.messages as any,
+      messages: options.messages as OpenAI.Chat.ChatCompletionMessageParam[],
       temperature: options.temperature,
       max_tokens: options.maxTokens,
       stream: false,
@@ -23,28 +27,32 @@ export class OpenAIProvider extends BaseAIProvider {
 
     const choice = response.choices[0];
     return {
-      content: choice.message.content || '',
+      content: choice.message.content || "",
       model: response.model,
       provider: this.name,
-      usage: response.usage ? {
-        promptTokens: response.usage.prompt_tokens,
-        completionTokens: response.usage.completion_tokens,
-        totalTokens: response.usage.total_tokens,
-      } : undefined,
+      usage: response.usage
+        ? {
+            promptTokens: response.usage.prompt_tokens,
+            completionTokens: response.usage.completion_tokens,
+            totalTokens: response.usage.total_tokens,
+          }
+        : undefined,
     };
   }
 
-  async *completeStream(options: AICompletionOptions): AsyncIterable<Partial<AICompletionResult>> {
+  async *completeStream(
+    options: AICompletionOptions,
+  ): AsyncIterable<Partial<AICompletionResult>> {
     const stream = await this.client.chat.completions.create({
       model: options.model,
-      messages: options.messages as any,
+      messages: options.messages as OpenAI.Chat.ChatCompletionMessageParam[],
       temperature: options.temperature,
       max_tokens: options.maxTokens,
       stream: true,
     });
 
     for await (const chunk of stream) {
-      const content = chunk.choices[0]?.delta?.content || '';
+      const content = chunk.choices[0]?.delta?.content || "";
       if (content) {
         yield {
           content,
@@ -60,7 +68,7 @@ export class OpenAIProvider extends BaseAIProvider {
       // Use a cheap operation to test the key
       await this.client.models.list();
       return true;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   }

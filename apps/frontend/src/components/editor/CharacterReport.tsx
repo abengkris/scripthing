@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Editor } from '@tiptap/react';
+import React, { useMemo } from "react";
+import { Editor, JSONContent } from "@tiptap/react";
 
 interface CharacterReportProps {
   editor: Editor | null;
@@ -8,13 +8,14 @@ interface CharacterReportProps {
 const CharacterReport: React.FC<CharacterReportProps> = ({ editor }) => {
   const report = useMemo(() => {
     if (!editor) return {};
-    
+
     const json = editor.getJSON();
     const characterStats: Record<string, number> = {};
 
-    const traverse = (node: any) => {
-      if (node.type === 'character') {
-        const name = node.content?.map((c: any) => c.text).join('') || 'Unknown';
+    const traverse = (node: JSONContent) => {
+      if (node.type === "character") {
+        const name =
+          node.content?.map((c: JSONContent) => c.text).join("") || "Unknown";
         characterStats[name] = (characterStats[name] || 0) + 1;
       }
       if (node.content) {

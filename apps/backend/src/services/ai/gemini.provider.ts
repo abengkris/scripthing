@@ -1,10 +1,14 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { BaseAIProvider } from './base.provider';
-import { AICompletionOptions, AICompletionResult, SUPPORTED_MODELS } from './types';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { BaseAIProvider } from "./base.provider";
+import {
+  AICompletionOptions,
+  AICompletionResult,
+  SUPPORTED_MODELS,
+} from "./types";
 
 export class GeminiProvider extends BaseAIProvider {
-  readonly name = 'gemini';
-  readonly supportedModels = SUPPORTED_MODELS.gemini.models.map(m => m.id);
+  readonly name = "gemini";
+  readonly supportedModels = SUPPORTED_MODELS.gemini.models.map((m) => m.id);
   private genAI: GoogleGenerativeAI;
 
   constructor(apiKey: string) {
@@ -12,11 +16,13 @@ export class GeminiProvider extends BaseAIProvider {
     this.genAI = new GoogleGenerativeAI(apiKey);
   }
 
-  private transformMessages(messages: any[]) {
+  private transformMessages(messages: AICompletionOptions["messages"]) {
     // Gemini's generateContent can take a single prompt string or a parts array.
     // For simplicity in this implementation, we concatenate messages.
     // A more advanced version would use the Chat session API.
-    return messages.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n\n');
+    return messages
+      .map((m) => `${m.role.toUpperCase()}: ${m.content}`)
+      .join("\n\n");
   }
 
   async complete(options: AICompletionOptions): Promise<AICompletionResult> {
@@ -38,13 +44,16 @@ export class GeminiProvider extends BaseAIProvider {
       provider: this.name,
       usage: {
         promptTokens: result.response.usageMetadata?.promptTokenCount || 0,
-        completionTokens: result.response.usageMetadata?.candidatesTokenCount || 0,
+        completionTokens:
+          result.response.usageMetadata?.candidatesTokenCount || 0,
         totalTokens: result.response.usageMetadata?.totalTokenCount || 0,
       },
     };
   }
 
-  async *completeStream(options: AICompletionOptions): AsyncIterable<Partial<AICompletionResult>> {
+  async *completeStream(
+    options: AICompletionOptions,
+  ): AsyncIterable<Partial<AICompletionResult>> {
     const model = this.genAI.getGenerativeModel({
       model: options.model,
       generationConfig: {
@@ -70,10 +79,15 @@ export class GeminiProvider extends BaseAIProvider {
 
   async testConnection(): Promise<boolean> {
     try {
-      const model = this.genAI.getGenerativeModel({ model: this.supportedModels[0] });
-      await model.generateContent({ contents: [{ role: 'user', parts: [{ text: 'test' }] }], generationConfig: { maxOutputTokens: 1 } });
+      const model = this.genAI.getGenerativeModel({
+        model: this.supportedModels[0],
+      });
+      await model.generateContent({
+        contents: [{ role: "user", parts: [{ text: "test" }] }],
+        generationConfig: { maxOutputTokens: 1 },
+      });
       return true;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   }

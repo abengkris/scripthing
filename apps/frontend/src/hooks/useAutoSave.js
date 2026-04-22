@@ -16,7 +16,6 @@ export const useAutoSave = (scriptId) => {
             // If successful, remove from queue and update status
             await removeFromQueue(queueId);
             setSaveStatus("saved");
-            // eslint-disable-next-line react-hooks/purity
             const now = Date.now();
             setLastSaved(now);
         }

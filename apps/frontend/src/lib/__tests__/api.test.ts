@@ -1,46 +1,51 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { api } from '../api';
-import { useAuthStore } from '../../store/authStore';
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { api } from "../api";
+import { useAuthStore } from "../../store/authStore";
 
-describe('API Client', () => {
+describe("API Client", () => {
   beforeEach(() => {
-    vi.stubGlobal('fetch', vi.fn());
+    vi.stubGlobal("fetch", vi.fn());
     vi.clearAllMocks();
-    useAuthStore.getState().setTokens('token', 'refresh');
+    useAuthStore.getState().setTokens("token", "refresh");
   });
 
-  it('should include Authorization header', async () => {
-    (fetch as any).mockResolvedValueOnce({
+  it("should include Authorization header", async () => {
+    (fetch as Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ data: { success: true } }),
     });
 
-    await api.get('/test');
+    await api.get("/test");
 
-    expect(fetch).toHaveBeenCalledWith('/test', expect.objectContaining({
-      headers: expect.any(Headers)
-    }));
+    expect(fetch).toHaveBeenCalledWith(
+      "/test",
+      expect.objectContaining({
+        headers: expect.any(Headers),
+      }),
+    );
   });
 
-  it('should handle 401 and retry', async () => {
+  it("should handle 401 and retry", async () => {
     // 1st request fails (401)
-    (fetch as any).mockResolvedValueOnce({
+    (fetch as Mock).mockResolvedValueOnce({
       status: 401,
       ok: false,
-      json: async () => ({ message: 'Unauthorized' }),
+      json: async () => ({ message: "Unauthorized" }),
     });
     // Refresh request (200)
-    (fetch as any).mockResolvedValueOnce({
+    (fetch as Mock).mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ data: { accessToken: 'new-token', refreshToken: 'new-refresh' } }),
+      json: async () => ({
+        data: { accessToken: "new-token", refreshToken: "new-refresh" },
+      }),
     });
     // Retry request (200)
-    (fetch as any).mockResolvedValueOnce({
+    (fetch as Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ data: { success: true } }),
     });
 
-    const result = await api.get('/test');
+    const result = await api.get("/test");
     expect(result.success).toBe(true);
     expect(fetch).toHaveBeenCalledTimes(3);
   });

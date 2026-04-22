@@ -2,15 +2,17 @@ import { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
 
 export const errorMiddleware = (fastify: FastifyInstance) => {
-  fastify.setErrorHandler((error, request, reply) => {
+  fastify.setErrorHandler((error, _request, reply) => {
     if (error instanceof ZodError) {
       return reply.status(400).send({
         statusCode: 400,
         message: "Validation error",
-        errors: error.errors.map((e) => ({
-          field: e.path.join("."),
-          message: e.message,
-        })),
+        errors: error.errors.map(
+          (e: { path: (string | number)[]; message: string }) => ({
+            field: e.path.join("."),
+            message: e.message,
+          }),
+        ),
       });
     }
 
@@ -21,7 +23,7 @@ export const errorMiddleware = (fastify: FastifyInstance) => {
       });
     }
 
-    request.log.error(error);
+    _request.log.error(error);
     reply.status(500).send({
       statusCode: 500,
       message: "Internal server error",

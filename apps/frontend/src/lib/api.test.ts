@@ -1,31 +1,31 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { request } from './api';
-import { useAuthStore } from '../store/authStore';
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { request } from "./api";
+import { useAuthStore } from "../store/authStore";
 
 // Mock the zustand store
-vi.mock('../store/authStore', () => ({
+vi.mock("../store/authStore", () => ({
   useAuthStore: {
     getState: vi.fn(),
   },
 }));
 
-describe('API Interceptor', () => {
-  let mockFetch: any;
-  
+describe("API Interceptor", () => {
+  let mockFetch: Mock;
+
   beforeEach(() => {
     mockFetch = vi.fn();
     global.fetch = mockFetch;
     vi.clearAllMocks();
   });
 
-  it('should refresh token and retry on 401', async () => {
+  it("should refresh token and retry on 401", async () => {
     const setTokensMock = vi.fn();
     const clearAuthMock = vi.fn();
-    
+
     // Initial state: token exists
-    (useAuthStore.getState as any).mockReturnValue({
-      accessToken: 'old-access',
-      refreshToken: 'valid-refresh',
+    (useAuthStore.getState as Mock).mockReturnValue({
+      accessToken: "old-access",
+      refreshToken: "valid-refresh",
       setTokens: setTokensMock,
       clearAuth: clearAuthMock,
     });
@@ -37,30 +37,35 @@ describe('API Interceptor', () => {
       .mockResolvedValueOnce({
         status: 401,
         ok: false,
-        json: async () => ({ message: 'Unauthorized' }),
+        json: async () => ({ message: "Unauthorized" }),
       })
       .mockResolvedValueOnce({
         status: 200,
         ok: true,
-        json: async () => ({ success: true, data: { accessToken: 'new-access', refreshToken: 'new-refresh' } }),
+        json: async () => ({
+          success: true,
+          data: { accessToken: "new-access", refreshToken: "new-refresh" },
+        }),
       })
       .mockResolvedValueOnce({
         status: 200,
         ok: true,
-        json: async () => ({ success: true, data: 'success data' }),
+        json: async () => ({ success: true, data: "success data" }),
       });
 
-    const result = await request('/api/test');
-    
-    expect(result).toEqual('success data');
+    const result = await request("/api/test");
+
+    expect(result).toEqual("success data");
     expect(mockFetch).toHaveBeenCalledTimes(3);
-    
+
     // Check if refresh was called correctly
-    expect(mockFetch.mock.calls[1][0]).toContain('/api/v1/auth/refresh');
-    
+    expect(mockFetch.mock.calls[1][0]).toContain("/api/v1/auth/refresh");
+
     // Check if original request was retried with new token
-    expect(mockFetch.mock.calls[2][1].headers.get('Authorization')).toBe('Bearer new-access');
-    
-    expect(setTokensMock).toHaveBeenCalledWith('new-access', 'new-refresh');
+    expect(mockFetch.mock.calls[2][1].headers.get("Authorization")).toBe(
+      "Bearer new-access",
+    );
+
+    expect(setTokensMock).toHaveBeenCalledWith("new-access", "new-refresh");
   });
 });
