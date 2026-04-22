@@ -1,0 +1,8 @@
+{
+  "track_id": "distribution_ci_cd_20260423",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-23T00:00:00Z",
+  "updated_at": "2026-04-23T00:00:00Z",
+  "description": "**Phase 9 - Distribution & CI/CD**\n\nRefer to 'Phase 9' in AGENTS.md. Set up GitHub Actions for CI/CD (lint → typecheck → test → build). Create a deployment script for VPS via SSH + Docker. Write the CHANGELOG.md using semver and draft the final README.md with self-hosting instructions."
+}
