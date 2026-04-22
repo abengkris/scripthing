@@ -1,7 +1,7 @@
 # Implementation Plan - Phase 2: Editor & Auto-save
 
 ## Phase 1: Tiptap Infrastructure & Nodes
-- [ ] Task: Set up Tiptap dependencies and base component
+- [x] Task: Set up Tiptap dependencies and base component b30ce50
     - [ ] Install `@tiptap/react`, `@tiptap/pm`, `@tiptap/starter-kit`
     - [ ] Create `Editor` component in `apps/frontend/src/components/editor/Editor.tsx`
     - [ ] Integrate `Editor` into the editor route (`apps/frontend/src/routes/editor.$id.tsx`)
