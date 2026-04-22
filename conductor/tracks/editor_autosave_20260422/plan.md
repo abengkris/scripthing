@@ -35,7 +35,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Screenplay Formatting & Layout' (Protocol in workflow.md)
 
 ## Phase 3: Auto-save & Offline Sync
-- [ ] Task: Implement IndexedDB persistence for offline queue
+- [x] Task: Implement IndexedDB persistence for offline queue b7984bd5
     - [ ] Install `idb` or similar for easier IndexedDB access
     - [ ] Create `apps/frontend/src/lib/db.ts` for storage logic
 - [ ] Task: Create Auto-save store in Zustand
