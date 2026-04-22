@@ -1,0 +1,8 @@
+{
+  "track_id": "fix_ci_errors_20260423",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-04-23T10:00:00Z",
+  "updated_at": "2026-04-23T10:00:00Z",
+  "description": "bug fix: Resolve all TypeScript type-checking errors in the apps/backend and packages/shared directories reported in the CI run on 2026-04-22."
+}
