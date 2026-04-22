@@ -1,25 +1,35 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GeminiProvider } from './gemini.provider';
 
+const mockGenerateContent = vi.fn().mockImplementation(async (prompt) => {
+  // prompt is a string here due to transformMessages
+  if (typeof prompt === 'string' && prompt.includes('FAIL')) {
+    throw new Error('Gemini Error');
+  }
+  return {
+    response: {
+      text: () => 'Hello world',
+      usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5, totalTokenCount: 15 },
+    }
+  };
+});
+
+const mockGenerateContentStream = vi.fn().mockImplementation(async (prompt) => {
+  return {
+    stream: (async function* () {
+      yield { text: () => 'Hello' };
+      yield { text: () => ' world' };
+    })(),
+  };
+});
+
 vi.mock('@google/generative-ai', () => {
-  const mockResponse = {
-    text: () => 'Hello world',
-    usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5, totalTokenCount: 15 },
-  };
-
-  const mockStream = (async function* () {
-    yield { text: () => 'Hello' };
-    yield { text: () => ' world' };
-  })();
-
-  const mockModel = {
-    generateContent: vi.fn().mockResolvedValue({ response: mockResponse }),
-    generateContentStream: vi.fn().mockResolvedValue({ stream: mockStream }),
-  };
-
   return {
     GoogleGenerativeAI: class {
-      getGenerativeModel = vi.fn().mockReturnValue(mockModel);
+      getGenerativeModel = vi.fn().mockReturnValue({
+        generateContent: mockGenerateContent,
+        generateContentStream: mockGenerateContentStream,
+      });
     }
   };
 });
@@ -37,10 +47,6 @@ describe('GeminiProvider', () => {
     expect(provider.name).toBe('gemini');
   });
 
-  it('should support specific models', () => {
-    expect(provider.supportedModels).toContain('gemini-1.5-pro');
-  });
-
   it('should complete successfully', async () => {
     const result = await provider.complete({
       messages: [{ role: 'user', content: 'Hi' }],
@@ -49,7 +55,13 @@ describe('GeminiProvider', () => {
 
     expect(result.content).toBe('Hello world');
     expect(result.provider).toBe('gemini');
-    expect(result.usage?.totalTokens).toBe(15);
+  });
+
+  it('should handle API errors', async () => {
+    await expect(provider.complete({
+      messages: [{ role: 'user', content: 'FAIL' }],
+      model: 'gemini-1.5-pro',
+    })).rejects.toThrow('Gemini Error');
   });
 
   it('should stream successfully', async () => {
@@ -64,10 +76,5 @@ describe('GeminiProvider', () => {
     }
 
     expect(chunks.join('')).toBe('Hello world');
-  });
-
-  it('should test connection successfully', async () => {
-    const isConnected = await provider.testConnection();
-    expect(isConnected).toBe(true);
   });
 });

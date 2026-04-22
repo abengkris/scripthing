@@ -1,23 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OpenAIProvider } from './openai.provider';
 
+const mockCreate = vi.fn().mockImplementation(async (options) => {
+  if (options.messages?.[0]?.content === 'FAIL') {
+    throw new Error('API Error');
+  }
+  if (options.stream) {
+    return (async function* () {
+      yield { choices: [{ delta: { content: 'Hello' } }] };
+      yield { choices: [{ delta: { content: ' world' } }] };
+    })();
+  }
+  return {
+    choices: [{ message: { content: 'Hello world' } }],
+    model: options.model,
+    usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
+  };
+});
+
 vi.mock('openai', () => {
-  const mockCreate = vi.fn().mockImplementation(async (options) => {
-    if (options.stream) {
-      return (async function* () {
-        yield { choices: [{ delta: { content: 'Hello' } }] };
-        yield { choices: [{ delta: { content: ' world' } }] };
-      })();
-    }
-    return {
-      choices: [{ message: { content: 'Hello world' } }],
-      model: options.model,
-      usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
-    };
-  });
-
-  const mockList = vi.fn().mockResolvedValue({ data: [] });
-
   return {
     default: class {
       chat = {
@@ -26,7 +27,7 @@ vi.mock('openai', () => {
         }
       };
       models = {
-        list: mockList
+        list: vi.fn().mockResolvedValue({ data: [] })
       };
     }
   };
@@ -59,6 +60,13 @@ describe('OpenAIProvider', () => {
     expect(result.content).toBe('Hello world');
     expect(result.provider).toBe('openai');
     expect(result.usage?.totalTokens).toBe(15);
+  });
+
+  it('should handle API errors gracefully', async () => {
+    await expect(provider.complete({
+      messages: [{ role: 'user', content: 'FAIL' }],
+      model: 'gpt-4o',
+    })).rejects.toThrow('API Error');
   });
 
   it('should stream successfully', async () => {
