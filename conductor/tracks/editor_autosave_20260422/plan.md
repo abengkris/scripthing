@@ -38,7 +38,7 @@
 - [x] Task: Implement IndexedDB persistence for offline queue b7984bd5
     - [ ] Install `idb` or similar for easier IndexedDB access
     - [ ] Create `apps/frontend/src/lib/db.ts` for storage logic
-- [ ] Task: Create Auto-save store in Zustand
+- [x] Task: Create Auto-save store in Zustand dd50bac2
     - [ ] Implement `useEditorStore` with `isDirty`, `lastSaved`, and `offlineQueue`
     - [ ] Add logic to persist `offlineQueue` to IndexedDB
 - [ ] Task: Implement debounced save logic
