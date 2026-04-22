@@ -18,6 +18,8 @@ export const buildApp = () => {
 
   errorMiddleware(fastify);
 
+  fastify.get('/api/v1/health', async () => ({ status: 'ok' }));
+
   // Routes
   fastify.register(authRoutes, { prefix: '/api/v1/auth' });
   fastify.register(projectRoutes, { prefix: '/api/v1/projects' });

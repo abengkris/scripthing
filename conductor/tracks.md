@@ -34,5 +34,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Phase 5 - Testing & QA: Unit, Integration, and E2E Tests**
+- [~] **Track: Phase 5 - Testing & QA: Unit, Integration, and E2E Tests**
 *Link: [./tracks/testing_qa_20260422/](./tracks/testing_qa_20260422/)*

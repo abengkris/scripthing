@@ -1,5 +1,17 @@
 import { vi } from 'vitest';
 
+vi.mock('puppeteer', () => ({
+  default: {
+    launch: vi.fn().mockResolvedValue({
+      newPage: vi.fn().mockResolvedValue({
+        setContent: vi.fn().mockResolvedValue(undefined),
+        pdf: vi.fn().mockResolvedValue(Buffer.from('mock pdf content')),
+      }),
+      close: vi.fn().mockResolvedValue(undefined),
+    }),
+  },
+}));
+
 vi.mock('@prisma/client', () => {
   const mockPrismaClient = {
     user: {

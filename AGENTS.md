@@ -81,7 +81,7 @@ This document is the complete architecture guide for AI agents and developers wo
 ### First-Time Setup
 ```bash
 # 1. Clone and enter repo
-git clone <repo-url> && cd scripthing
+git clone https://github.com/abengkris/scripthing.git && cd scripthing
 
 # 2. Install all workspace dependencies
 pnpm install
