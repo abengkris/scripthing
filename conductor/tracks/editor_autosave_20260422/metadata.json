@@ -1,0 +1,8 @@
+{
+  "track_id": "editor_autosave_20260422",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-22T12:00:00Z",
+  "updated_at": "2026-04-22T12:00:00Z",
+  "description": "Phase 2 - Editor: Tiptap integration and Auto-save. Implement the Tiptap editor with custom extensions (SceneHeading, Action, Character, Dialogue, Parenthetical, Transition). Add the auto-format rules (e.g., Tab/Enter behavior). Finally, implement the debounced auto-save strategy (2 seconds) with an offline save queue using Zustand."
+}
