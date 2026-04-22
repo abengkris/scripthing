@@ -1,0 +1,55 @@
+# Implementation Plan - Phase 3: AI Integration
+
+## Phase 1: AI Provider Infrastructure & Backend (Backend)
+Focuses on the core AI provider logic, model support, and secure API key management.
+
+- [ ] Task: AI Security: Implement AES-256-GCM encryption for API keys
+    - [ ] Write unit tests for encryption/decryption utility
+    - [ ] Implement encryption/decryption using `APP_SECRET`
+    - [ ] Update `SettingsService` to encrypt/decrypt keys during save/load
+- [ ] Task: AI Provider Base Class and Model Definitions
+    - [ ] Define `BaseAIProvider` abstract class and common interfaces
+    - [ ] Define supported model configurations for OpenAI, Anthropic, Gemini, Ollama
+- [ ] Task: Concrete Provider Implementations
+    - [ ] Write tests for `OpenAIProvider`
+    - [ ] Implement `OpenAIProvider`
+    - [ ] Write tests for `AnthropicProvider`
+    - [ ] Implement `AnthropicProvider`
+    - [ ] Write tests for `GeminiProvider`
+    - [ ] Implement `GeminiProvider`
+    - [ ] Write tests for `OllamaProvider`
+    - [ ] Implement `OllamaProvider`
+- [ ] Task: AI Routing & SSE Middleware
+    - [ ] Implement AI controller with SSE support for `/ai/chat`
+    - [ ] Set up rate-limiting for AI endpoints
+    - [ ] Verify non-buffering SSE output in backend
+- [ ] Task: Conductor - User Manual Verification 'AI Provider Infrastructure & Backend' (Protocol in workflow.md) [checkpoint: ]
+
+## Phase 2: Frontend AI Integration (Frontend)
+Focuses on the AI Sidebar, SSE streaming client, and interactive UI elements.
+
+- [ ] Task: SSE Client Implementation
+    - [ ] Integrate `@microsoft/fetch-event-source` into the API client
+    - [ ] Implement robust stream handling with error recovery
+    - [ ] Add "Stop Generation" support to the API client
+- [ ] Task: AI Sidebar UI Components
+    - [ ] Create AI Sidebar container (Fixed Side Panel)
+    - [ ] Implement chat interface for AI interactions
+    - [ ] Implement suggestion, rewrite, and analysis triggers
+- [ ] Task: Real-time UI Enhancements
+    - [ ] Implement real-time word/token count display during streaming
+    - [ ] Add Provider/Model badges to the generation UI
+    - [ ] Add "Stop Generation" button and state handling
+- [ ] Task: Conductor - User Manual Verification 'Frontend AI Integration' (Protocol in workflow.md) [checkpoint: ]
+
+## Phase 3: Testing, Security & Polish (E2E)
+Focuses on integrated testing, security audits, and UI polish.
+
+- [ ] Task: Integration & Security Audit
+    - [ ] Verify E2E AI flow for all providers
+    - [ ] Perform security audit for API key handling
+    - [ ] Ensure privacy guidelines (no logging) are met
+- [ ] Task: UI Polish & Dark Mode Support
+    - [ ] Refine sidebar animations and layout
+    - [ ] Ensure full dark mode compatibility for the AI Sidebar
+- [ ] Task: Conductor - User Manual Verification 'Testing, Security & Polish' (Protocol in workflow.md) [checkpoint: ]

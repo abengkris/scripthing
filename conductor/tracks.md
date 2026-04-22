@@ -23,5 +23,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: Phase 2 - Editor: Tiptap integration and Auto-save**
+- [ ] **Track: Phase 2 - Editor: Tiptap integration and Auto-save**
 *Link: [./tracks/editor_autosave_20260422/](./tracks/editor_autosave_20260422/)*
+
+---
+
+- [ ] **Track: Phase 3 - AI Integration: Multi-provider setup and SSE streaming**
+*Link: [./tracks/ai_integration_20260422/](./tracks/ai_integration_20260422/)*
