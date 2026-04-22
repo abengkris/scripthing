@@ -6,7 +6,8 @@
     "dev": "tsx watch src/main.ts",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
