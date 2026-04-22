@@ -1,19 +1,19 @@
 # Implementation Plan: Phase 5 - Testing & QA
 
-## Phase 1: Infrastructure Setup
-- [ ] Task: Configure Vitest in `apps/backend`
-    - [ ] Install dev dependencies
-    - [ ] Create `vitest.config.ts`
-    - [ ] Set up test environment and database mocks
-- [ ] Task: Configure Vitest in `apps/frontend`
-    - [ ] Install dev dependencies
-    - [ ] Create `vitest.config.ts`
-    - [ ] Set up React Testing Library and JSDOM
-- [ ] Task: Configure Playwright for E2E
-    - [ ] Install `@playwright/test`
-    - [ ] Initialize playwright config in project root or dedicated folder
-    - [ ] Create base page objects or helpers
-- [ ] Task: Conductor - User Manual Verification 'Infrastructure Setup' (Protocol in workflow.md)
+## Phase 1: Infrastructure Setup [checkpoint: 55d44b4]
+- [x] Task: Configure Vitest in `apps/backend` 55d44b4
+    - [x] Install dev dependencies
+    - [x] Create `vitest.config.ts`
+    - [x] Set up test environment and database mocks
+- [x] Task: Configure Vitest in `apps/frontend` 55d44b4
+    - [x] Install dev dependencies
+    - [x] Create `vitest.config.ts`
+    - [x] Set up React Testing Library and JSDOM
+- [x] Task: Configure Playwright for E2E 55d44b4
+    - [x] Install `@playwright/test`
+    - [x] Initialize playwright config in project root or dedicated folder
+    - [x] Create base page objects or helpers
+- [x] Task: Conductor - User Manual Verification 'Infrastructure Setup' (Protocol in workflow.md) 55d44b4
 
 ## Phase 2: Backend Unit & Integration Tests
 - [ ] Task: Implement tests for Auth Service & Routes
