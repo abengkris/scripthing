@@ -45,3 +45,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Phase 7 - Performance Optimization (Lazy loading, virtual scrolling, pagination)**
 *Link: [./tracks/performance_opt_20260422/](./tracks/performance_opt_20260422/)*
+
+---
+
+- [ ] **Track: Phase 8 - UX & Feature Polish**
+*Link: [./tracks/phase8_ux_polish_20260422/](./tracks/phase8_ux_polish_20260422/)*
