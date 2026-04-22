@@ -18,5 +18,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Phase 1 - Core Foundation: Monorepo setup, Backend Base, and Auth**
+- [x] **Track: Phase 1 - Core Foundation: Monorepo setup, Backend Base, and Auth**
 *Link: [./tracks/core_foundation_20260422/](./tracks/core_foundation_20260422/)*
