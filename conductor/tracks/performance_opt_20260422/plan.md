@@ -11,7 +11,5 @@
 - [x] Wrap editor content in TanStack Virtual.
 - [x] Task: Conductor - User Manual Verification 'Virtual Scrolling Integration' (Protocol in workflow.md)
 
-## Phase 3: Backend Database Pagination
-- [x] Update projects list endpoint for offset-based pagination. (Skipped: Route is currently mock data)
-- [x] Update scripts list endpoint for offset-based pagination. (Skipped: Route is currently mock data)
-- [x] Task: Conductor - User Manual Verification 'Backend Database Pagination' (Protocol in workflow.md)
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions bdf34987
