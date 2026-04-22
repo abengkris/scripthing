@@ -4,10 +4,20 @@ import { ScreenplayExtensions } from "./extensions";
 import "./Editor.css";
 import { useAutoSave } from "../../hooks/useAutoSave";
 import { useParams } from "react-router-dom";
+import { useSync } from "../../hooks/useSync";
+import { useEditorStore } from "../../store/editorStore";
+import { useEffect } from "react";
 
 const Editor = () => {
   const { id } = useParams<{ id: string }>();
   const autoSave = useAutoSave(id);
+  const { initQueue } = useEditorStore();
+
+  useSync(); // Background sync
+
+  useEffect(() => {
+    initQueue();
+  }, [initQueue]);
 
   const editor = useEditor({
     extensions: [StarterKit, ...ScreenplayExtensions],
