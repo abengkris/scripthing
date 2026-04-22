@@ -9,7 +9,7 @@
 
 ## Phase 2: Graceful Key Rotation
 - [x] Update key decryption utility to check `APP_SECRET` and fallback to `APP_SECRET_PREVIOUS`. 5f4c019
-- [ ] Implement lazy migration logic upon successful decryption with `APP_SECRET_PREVIOUS`.
+- [x] Implement lazy migration logic upon successful decryption with `APP_SECRET_PREVIOUS`. 92c98d3
 - [ ] Add unit tests to simulate key rotation scenarios and data migration.
 - [ ] Conductor - User Manual Verification 'Graceful Key Rotation' (Protocol in workflow.md)
 
