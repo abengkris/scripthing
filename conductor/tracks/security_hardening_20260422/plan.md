@@ -14,7 +14,7 @@
 - [ ] Conductor - User Manual Verification 'Graceful Key Rotation' (Protocol in workflow.md)
 
 ## Phase 3: Backup & Deployment
-- [ ] Implement production backup script (or configure Litestream).
+- [x] Implement production backup script (or configure Litestream). 30351a7
 - [ ] Verify backup integrity with a test restoration process.
 - [ ] Update `docker-compose.yml` and environment variable documentation.
 - [ ] Conductor - User Manual Verification 'Backup & Deployment' (Protocol in workflow.md)
