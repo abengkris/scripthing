@@ -1,9 +1,9 @@
 # Implementation Plan: Phase 4 - Export & Polish
 
-- [ ] **Phase 1: PDF/FDX Export Implementation**
-    - [ ] Task: Research and implement Puppeteer PDF export in backend
-    - [ ] Task: Implement Final Draft (.fdx) export format support
-    - [ ] Task: Add export buttons to script editor UI
+- [x] **Phase 1: PDF/FDX Export Implementation**
+    - [x] Task: Research and implement Puppeteer PDF export in backend
+    - [x] Task: Implement Final Draft (.fdx) export format support
+    - [x] Task: Add export buttons to script editor UI
     - [ ] Task: Conductor - User Manual Verification 'Export Implementation' (Protocol in workflow.md)
 
 - [ ] **Phase 2: UI/UX Polish (Dark/Light Mode)**
