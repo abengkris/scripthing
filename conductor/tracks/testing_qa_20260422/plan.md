@@ -49,10 +49,10 @@
     - [x] Implement test script for 401 -> refresh -> retry flow
 - [x] Task: Conductor - User Manual Verification 'E2E Tests' (Protocol in workflow.md) 8662e81
 
-## Phase 5: Finalization & Coverage
-- [ ] Task: Generate and Audit Coverage Report
-    - [ ] Run coverage for both apps
-    - [ ] Identify gaps and add tests to reach >80%
-- [ ] Task: Document Testing Workflow
-    - [ ] Update READMEs with test commands and conventions
-- [ ] Task: Conductor - User Manual Verification 'Finalization' (Protocol in workflow.md)
+## Phase 5: Finalization & Coverage [checkpoint: 8662e81]
+- [x] Task: Generate and Audit Coverage Report 8662e81
+    - [x] Run coverage for both apps
+    - [x] Identify gaps and add tests to reach >80%
+- [x] Task: Document Testing Workflow 8662e81
+    - [x] Update READMEs with test commands and conventions
+- [x] Task: Conductor - User Manual Verification 'Finalization' (Protocol in workflow.md) 8662e81
