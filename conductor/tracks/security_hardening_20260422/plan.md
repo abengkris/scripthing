@@ -4,7 +4,7 @@
 - [x] Install `@fastify/helmet` and update backend dependencies. 42361aa
 - [x] Register `fastify-helmet` in the Fastify app. a95fee3
 - [x] Configure `pino` for structured, asynchronous logging. 86bf751
-- [ ] Implement privacy-filtering middleware to ensure no PII/secrets are logged.
+- [x] Implement privacy-filtering middleware to ensure no PII/secrets are logged. cffb333
 - [ ] Conductor - User Manual Verification 'Security Headers & Observability' (Protocol in workflow.md)
 
 ## Phase 2: Graceful Key Rotation
