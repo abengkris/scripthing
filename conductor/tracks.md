@@ -23,5 +23,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Phase 2 - Editor: Tiptap integration and Auto-save**
+- [x] **Track: Phase 2 - Editor: Tiptap integration and Auto-save**
 *Link: [./tracks/editor_autosave_20260422/](./tracks/editor_autosave_20260422/)*
