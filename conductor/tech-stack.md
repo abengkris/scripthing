@@ -36,3 +36,4 @@
 | Docker Compose | Multi-container orchestration |
 | SQLite (`.backup`) | Automated database backup script |
 | Nginx | Reverse proxy with SSE support |
+| GitHub Actions | CI/CD pipeline for quality checks and deployment |

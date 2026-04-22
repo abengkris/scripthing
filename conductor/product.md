@@ -10,6 +10,7 @@ To provide a distraction-free, professional-grade screenplay writing experience 
 - Local-first architecture using a SQLite database.
 - Seamless AI integration (Chat, Suggest, Rewrite) for an optional writing boost.
 - High-quality exports (PDF, Final Draft .fdx).
+- CI/CD pipeline for automated quality assurance and seamless VPS deployment.
 - Enhanced UX with real-time word/page counts, character appearance reports, find & replace, and keyboard shortcuts.
 - Enterprise-grade security features including automated database backups, structured logging, and automated graceful secret rotation.
 
