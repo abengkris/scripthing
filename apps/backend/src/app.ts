@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import { config } from "./config";
 import { errorMiddleware } from "./middleware/error.middleware";
+import { privacyMiddleware } from "./middleware/privacy.middleware";
 import authRoutes from "./routes/auth";
 import { projectRoutes } from "./routes/projects";
 import { scriptRoutes } from "./routes/scripts";
@@ -32,6 +33,7 @@ export const buildApp = () => {
   });
 
   errorMiddleware(fastify);
+  privacyMiddleware(fastify);
 
   fastify.get("/api/v1/health", async () => ({ status: "ok" }));
 
