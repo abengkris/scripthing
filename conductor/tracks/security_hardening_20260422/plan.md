@@ -16,5 +16,5 @@
 ## Phase 3: Backup & Deployment
 - [x] Implement production backup script (or configure Litestream). 30351a7
 - [x] Verify backup integrity with a test restoration process. 197be97
-- [ ] Update `docker-compose.yml` and environment variable documentation.
+- [x] Update `docker-compose.yml` and environment variable documentation. fa133ed
 - [ ] Conductor - User Manual Verification 'Backup & Deployment' (Protocol in workflow.md)
