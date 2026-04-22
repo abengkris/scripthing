@@ -1,9 +1,10 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { ScreenplayExtensions } from "./extensions";
 
 const Editor = () => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, ...ScreenplayExtensions],
     content: "<p>Start writing your screenplay...</p>",
     editorProps: {
       attributes: {

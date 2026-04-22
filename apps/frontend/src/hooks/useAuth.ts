@@ -10,7 +10,7 @@ import {
 export const useRegister = () => {
   return useMutation({
     mutationFn: (data: RegisterRequest) =>
-      api.post<AuthResponse>("/auth/register", data).then((r) => r.data),
+      api.post<AuthResponse>("/auth/register", data),
     onSuccess: (data: AuthResponse) => {
       useAuthStore
         .getState()
@@ -22,7 +22,7 @@ export const useRegister = () => {
 export const useLogin = () => {
   return useMutation({
     mutationFn: (data: LoginRequest) =>
-      api.post<AuthResponse>("/auth/login", data).then((r) => r.data),
+      api.post<AuthResponse>("/auth/login", data),
     onSuccess: (data: AuthResponse) => {
       useAuthStore
         .getState()
@@ -42,7 +42,7 @@ export const useMe = () => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   return useQuery({
     queryKey: ["me"],
-    queryFn: () => api.get<AuthResponse>("/auth/me").then((r) => r.data),
+    queryFn: () => api.get<AuthResponse>("/auth/me"),
     enabled: isAuthenticated,
     retry: false,
   });
