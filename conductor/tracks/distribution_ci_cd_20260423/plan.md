@@ -10,16 +10,16 @@
     - [x] Add step for Docker build verification (build backend/frontend images)
 - [x] Task: Conductor - User Manual Verification 'CI/CD Setup' (Protocol in workflow.md) 5ba4e87
 
-## Phase 2: Deployment Scripting (VPS via SSH + Docker)
-- [ ] Task: Create `scripts/deploy.sh` for automated VPS deployment
-    - [ ] Implement pre-deploy database backup logic (copying `scripthing.db` to a timestamped backup)
-    - [ ] Implement logic to pull latest Docker images and restart services
-    - [ ] Implement Prisma migration step (`npx prisma migrate deploy`)
-    - [ ] Implement post-deploy health check (waiting for HTTP 200 on `/api/v1/auth/me`)
-    - [ ] Implement automated rollback logic (reverting to previous image/backup on failure)
-- [ ] Task: Create `.github/workflows/deploy.yml` for Continuous Deployment
-    - [ ] Add job to trigger `scripts/deploy.sh` via SSH on push to `main`
-    - [ ] Configure GitHub Secrets for `SSH_PRIVATE_KEY`, `VPS_HOST`, and `VPS_USER`
+## Phase 2: Deployment Scripting (VPS via SSH + Docker) 7d7801d
+- [x] Task: Create `scripts/deploy.sh` for automated VPS deployment 7d7801d
+    - [x] Implement pre-deploy database backup logic (copying `scripthing.db` to a timestamped backup)
+    - [x] Implement logic to pull latest Docker images and restart services
+    - [x] Implement Prisma migration step (`npx prisma migrate deploy`)
+    - [x] Implement post-deploy health check (waiting for HTTP 200 on `/api/v1/auth/me`)
+    - [x] Implement automated rollback logic (reverting to previous image/backup on failure)
+- [x] Task: Create `.github/workflows/deploy.yml` for Continuous Deployment 7d7801d
+    - [x] Add job to trigger `scripts/deploy.sh` via SSH on push to `main`
+    - [x] Configure GitHub Secrets for `SSH_PRIVATE_KEY`, `VPS_HOST`, and `VPS_USER`
 - [ ] Task: Conductor - User Manual Verification 'Deployment Scripting' (Protocol in workflow.md)
 
 ## Phase 3: Final Documentation (CHANGELOG, README)
