@@ -10,4 +10,11 @@ export const Action = Node.create({
   renderHTML({ HTMLAttributes }) {
     return ["p", mergeAttributes(HTMLAttributes, { class: "action mt-4" }), 0];
   },
+  addKeyboardShortcuts() {
+    return {
+      Tab: () => {
+        return this.editor.commands.insertContent({ type: "character" });
+      },
+    };
+  },
 });

@@ -1,6 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { ScreenplayExtensions } from "./extensions";
+import "./Editor.css";
 
 const Editor = () => {
   const editor = useEditor({

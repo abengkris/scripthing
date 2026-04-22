@@ -1,0 +1,68 @@
+/* apps/frontend/src/components/editor/Editor.css */
+
+.screenplay-page {
+  font-family: 'Courier Prime', 'Courier New', Courier, monospace;
+  font-size: 12pt;
+  line-height: 1.2;
+  color: #333;
+}
+
+.screenplay-editor .ProseMirror {
+  outline: none;
+}
+
+/* Scene Heading: 1.5" from top, Bold, Uppercase */
+.scene-heading {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Action: Standard paragraph, single spaced */
+.action {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+/* Character: 3.5" from left (approx 4in from left of paper), Uppercase */
+.character {
+  text-transform: uppercase;
+  width: 4in;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Parenthetical: 2.5" from left, centered relative to dialogue */
+.parenthetical {
+  width: 2.5in;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.parenthetical::before {
+  content: '(';
+}
+
+.parenthetical::after {
+  content: ')';
+}
+
+/* Dialogue: 2.5" from left, 6" width total paper - approx 3.5in content */
+.dialogue {
+  width: 3.5in;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Transition: Right aligned, Uppercase */
+.transition {
+  text-transform: uppercase;
+  text-align: right;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

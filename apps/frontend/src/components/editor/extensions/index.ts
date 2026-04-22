@@ -4,6 +4,7 @@ import { Character } from "./Character";
 import { Dialogue } from "./Dialogue";
 import { Parenthetical } from "./Parenthetical";
 import { Transition } from "./Transition";
+import { ScreenplayShortcuts } from "./ScreenplayShortcuts";
 
 export const ScreenplayExtensions = [
   SceneHeading,
@@ -12,6 +13,7 @@ export const ScreenplayExtensions = [
   Dialogue,
   Parenthetical,
   Transition,
+  ScreenplayShortcuts,
 ];
 
 export * from "./SceneHeading";
@@ -20,3 +22,4 @@ export * from "./Character";
 export * from "./Dialogue";
 export * from "./Parenthetical";
 export * from "./Transition";
+export * from "./ScreenplayShortcuts";

@@ -16,4 +16,11 @@ export const Character = Node.create({
       0,
     ];
   },
+  addKeyboardShortcuts() {
+    return {
+      Enter: () => {
+        return this.editor.commands.insertContent({ type: "dialogue" });
+      },
+    };
+  },
 });
