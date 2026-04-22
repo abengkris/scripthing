@@ -28,18 +28,18 @@ Focuses on the core AI provider logic, model support, and secure API key managem
 ## Phase 2: Frontend AI Integration (Frontend)
 Focuses on the AI Sidebar, SSE streaming client, and interactive UI elements.
 
-- [ ] Task: SSE Client Implementation
-    - [ ] Integrate `@microsoft/fetch-event-source` into the API client
-    - [ ] Implement robust stream handling with error recovery
-    - [ ] Add "Stop Generation" support to the API client
-- [ ] Task: AI Sidebar UI Components
-    - [ ] Create AI Sidebar container (Fixed Side Panel)
-    - [ ] Implement chat interface for AI interactions
-    - [ ] Implement suggestion, rewrite, and analysis triggers
-- [ ] Task: Real-time UI Enhancements
-    - [ ] Implement real-time word/token count display during streaming
-    - [ ] Add Provider/Model badges to the generation UI
-    - [ ] Add "Stop Generation" button and state handling
+- [x] Task: SSE Client Implementation
+    - [x] Integrate `@microsoft/fetch-event-source` into the API client
+    - [x] Implement robust stream handling with error recovery
+    - [x] Add "Stop Generation" support to the API client
+- [x] Task: AI Sidebar UI Components
+    - [x] Create AI Sidebar container (Fixed Side Panel)
+    - [x] Implement chat interface for AI interactions
+    - [x] Implement suggestion, rewrite, and analysis triggers
+- [x] Task: Real-time UI Enhancements
+    - [x] Implement real-time word/token count display during streaming
+    - [x] Add Provider/Model badges to the generation UI
+    - [x] Add "Stop Generation" button and state handling
 - [ ] Task: Conductor - User Manual Verification 'Frontend AI Integration' (Protocol in workflow.md) [checkpoint: ]
 
 ## Phase 3: Testing, Security & Polish (E2E)
