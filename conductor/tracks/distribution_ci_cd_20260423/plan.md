@@ -22,14 +22,14 @@
     - [x] Configure GitHub Secrets for `SSH_PRIVATE_KEY`, `VPS_HOST`, and `VPS_USER`
 - [x] Task: Conductor - User Manual Verification 'Deployment Scripting' (Protocol in workflow.md) 04ab02e
 
-## Phase 3: Final Documentation (CHANGELOG, README)
-- [~] Task: Initialize `CHANGELOG.md` following SemVer
-    - [ ] Add initial release entry with description of features from Phases 1-8
-- [ ] Task: Draft final `README.md` with comprehensive self-hosting guide
-    - [ ] Add project overview, visuals, and badges (Build status, License, etc.)
-    - [ ] Add system requirements (Node.js, Docker, SQLite)
-    - [ ] Add detailed `.env` configuration guide
-    - [ ] Add step-by-step self-hosting instructions (manual vs. docker-compose)
-    - [ ] Add backup, restore, and troubleshooting procedures
-    - [ ] Add contribution and license sections
-- [ ] Task: Conductor - User Manual Verification 'Final Documentation' (Protocol in workflow.md)
+## Phase 3: Final Documentation (CHANGELOG, README) 497d777
+- [x] Task: Initialize `CHANGELOG.md` following SemVer 497d777
+    - [x] Add initial release entry with description of features from Phases 1-8
+- [x] Task: Draft final `README.md` with comprehensive self-hosting guide 497d777
+    - [x] Add project overview, visuals, and badges (Build status, License, etc.)
+    - [x] Add system requirements (Node.js, Docker, SQLite)
+    - [x] Add detailed `.env` configuration guide
+    - [x] Add step-by-step self-hosting instructions (manual vs. docker-compose)
+    - [x] Add backup, restore, and troubleshooting procedures
+    - [x] Add contribution and license sections
+- [x] Task: Conductor - User Manual Verification 'Final Documentation' (Protocol in workflow.md) 497d777
