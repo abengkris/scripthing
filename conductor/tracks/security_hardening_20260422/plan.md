@@ -1,0 +1,20 @@
+# Implementation Plan: Phase 6 - Security Hardening & DevOps
+
+## Phase 1: Security Headers & Observability
+- [x] Install `@fastify/helmet` and update backend dependencies. 42361aa
+- [ ] Register `fastify-helmet` in the Fastify app.
+- [ ] Configure `pino` for structured, asynchronous logging.
+- [ ] Implement privacy-filtering middleware to ensure no PII/secrets are logged.
+- [ ] Conductor - User Manual Verification 'Security Headers & Observability' (Protocol in workflow.md)
+
+## Phase 2: Graceful Key Rotation
+- [ ] Update key decryption utility to check `APP_SECRET` and fallback to `APP_SECRET_PREVIOUS`.
+- [ ] Implement lazy migration logic upon successful decryption with `APP_SECRET_PREVIOUS`.
+- [ ] Add unit tests to simulate key rotation scenarios and data migration.
+- [ ] Conductor - User Manual Verification 'Graceful Key Rotation' (Protocol in workflow.md)
+
+## Phase 3: Backup & Deployment
+- [ ] Implement production backup script (or configure Litestream).
+- [ ] Verify backup integrity with a test restoration process.
+- [ ] Update `docker-compose.yml` and environment variable documentation.
+- [ ] Conductor - User Manual Verification 'Backup & Deployment' (Protocol in workflow.md)
