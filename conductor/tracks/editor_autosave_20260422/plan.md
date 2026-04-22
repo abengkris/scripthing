@@ -5,7 +5,7 @@
     - [ ] Install `@tiptap/react`, `@tiptap/pm`, `@tiptap/starter-kit`
     - [ ] Create `Editor` component in `apps/frontend/src/components/editor/Editor.tsx`
     - [ ] Integrate `Editor` into the editor route (`apps/frontend/src/routes/editor.$id.tsx`)
-- [ ] Task: Implement custom screenplay nodes
+- [x] Task: Implement custom screenplay nodes 600c6798
     - [ ] Create `SceneHeading` extension
     - [ ] Create `Action` extension
     - [ ] Create `Character` extension
