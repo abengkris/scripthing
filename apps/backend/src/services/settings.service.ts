@@ -1,6 +1,10 @@
-import { encrypt, decrypt } from '../lib/security';
+import { encrypt, decrypt } from "../lib/security";
 
-const API_KEY_FIELDS = ['openaiApiKey', 'anthropicApiKey', 'geminiApiKey'] as const;
+const API_KEY_FIELDS = [
+  "openaiApiKey",
+  "anthropicApiKey",
+  "geminiApiKey",
+] as const;
 
 export interface GetSettingsOptions {
   decryptKeys?: boolean;
@@ -11,12 +15,22 @@ export interface GetSettingsOptions {
  */
 function maskKey(key: string | null): string | null {
   if (!key) return null;
-  const decrypted = decrypt(key);
-  if (decrypted.length <= 4) return '****';
-  return `****${decrypted.slice(-4)}`;
+  const { text } = decrypt(key);
+  if (text.length <= 4) return "****";
+  return `****${text.slice(-4)}`;
 }
 
-export async function getSettings(prisma: any, userId: string, options: GetSettingsOptions = {}) {
+export async function getSettings(
+  prisma: {
+    settings: {
+      findUnique: (args: {
+        where: { userId: string };
+      }) => Promise<Record<string, unknown> | null>;
+    };
+  },
+  userId: string,
+  options: GetSettingsOptions = {},
+) {
   const settings = await prisma.settings.findUnique({
     where: { userId },
   });
@@ -27,13 +41,13 @@ export async function getSettings(prisma: any, userId: string, options: GetSetti
       openaiApiKey: null,
       anthropicApiKey: null,
       geminiApiKey: null,
-      ollamaEndpoint: 'http://localhost:11434',
+      ollamaEndpoint: "http://localhost:11434",
       activeProvider: null,
       activeModel: null,
       aiTemperature: 0.7,
-      theme: 'dark',
+      theme: "dark",
       fontSize: 12,
-      fontFamily: 'Courier Prime',
+      fontFamily: "Courier Prime",
       autoSaveInterval: 30,
     };
   }
@@ -43,7 +57,8 @@ export async function getSettings(prisma: any, userId: string, options: GetSetti
   for (const field of API_KEY_FIELDS) {
     if (result[field]) {
       if (options.decryptKeys) {
-        result[field] = decrypt(result[field]);
+        const { text } = decrypt(result[field]);
+        result[field] = text;
       } else {
         result[field] = maskKey(result[field]);
       }
@@ -53,17 +68,30 @@ export async function getSettings(prisma: any, userId: string, options: GetSetti
   return result;
 }
 
-export async function updateSettings(prisma: any, userId: string, data: any) {
-  const updateData = { ...data };
+export async function updateSettings(
+  prisma: {
+    settings: {
+      upsert: (args: {
+        where: { userId: string };
+        update: Record<string, unknown>;
+        create: Record<string, unknown>;
+      }) => Promise<Record<string, unknown>>;
+    };
+  },
+  userId: string,
+  data: Record<string, unknown>,
+) {
+  const updateData = { ...data } as Record<string, unknown>;
 
   // Encrypt sensitive fields
   for (const field of API_KEY_FIELDS) {
     if (updateData[field] !== undefined && updateData[field] !== null) {
       // If it's already masked (e.g. sent back from frontend), don't update it
-      if (typeof updateData[field] === 'string' && updateData[field].startsWith('****')) {
+      const value = updateData[field];
+      if (typeof value === "string" && value.startsWith("****")) {
         delete updateData[field];
       } else {
-        updateData[field] = encrypt(updateData[field]);
+        updateData[field] = encrypt(String(value));
       }
     }
   }

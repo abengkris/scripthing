@@ -15,8 +15,6 @@ describe("Graceful Key Rotation", () => {
     const originalText = "secret-data";
 
     // Encrypt with PREVIOUS secret (simulate old data)
-    // We use @ts-expect-error as config is immutable, but necessary for rotation testing.
-    // @ts-expect-error: Required for test-only modification of immutable config
     config.APP_SECRET_PREVIOUS = "old-secret-1234567890123456789012345678";
 
     const tempSecret = config.APP_SECRET;
