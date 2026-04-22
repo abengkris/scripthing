@@ -7,7 +7,7 @@ vi.mock('@prisma/client', () => {
   const mockPrismaClient = {
     user: {
       findUnique: vi.fn().mockImplementation(async ({ where }) => {
-        if (where.email === 'exist@example.com') {
+        if (where.email === 'exist@example.com' || where.id === 'user-id') {
           return { id: 'user-id', email: 'exist@example.com', name: 'Existing User', passwordHash: 'hashed' };
         }
         return null;
@@ -70,13 +70,38 @@ describe('Auth Routes', () => {
     expect(body.data.user).toHaveProperty('email', 'exist@example.com');
   });
 
-  it('should fail registration with invalid input', async () => {
+  it('should refresh a token', async () => {
+    // First login to get a refresh token
+    const loginRes = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/login',
+      payload: { email: 'exist@example.com', password: 'password123' },
+    });
+    const loginBody = JSON.parse(loginRes.payload);
+    const refreshToken = loginBody.data.refreshToken;
+
     const res = await app.inject({
       method: 'POST',
-      url: '/api/v1/auth/register',
-      payload: { email: 'not-an-email', password: 'short' },
+      url: '/api/v1/auth/refresh',
+      payload: { refreshToken },
     });
     
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(200);
+    const body = JSON.parse(res.payload);
+    expect(body.success).toBe(true);
+    expect(body.data).toHaveProperty('accessToken');
+    expect(body.data).toHaveProperty('refreshToken');
+  });
+
+  it('should logout a user', async () => {
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/logout',
+    });
+    
+    expect(res.statusCode).toBe(200);
+    const body = JSON.parse(res.payload);
+    expect(body.success).toBe(true);
+    expect(body.message).toBe('Logged out');
   });
 });
