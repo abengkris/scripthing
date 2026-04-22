@@ -18,6 +18,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
 
 ## Phase 4: Keyboard Shortcut Reference
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (6a55f50f)
 - [x] Task: Catalog all keyboard shortcuts used in Scripthing
 - [x] Task: Create UI modal/panel for shortcuts
 - [x] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md)
