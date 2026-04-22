@@ -29,16 +29,25 @@ export function encrypt(text: string): string {
 
 /**
  * Decrypts a string. Tries current APP_SECRET, falls back to APP_SECRET_PREVIOUS if auth fails.
+ * Returns the decrypted string and a boolean indicating if it was decrypted with the previous secret.
  */
-export function decrypt(encryptedData: string): string {
+export function decrypt(encryptedData: string): {
+  text: string;
+  needsMigration: boolean;
+} {
   // Try current APP_SECRET
   try {
-    return decryptWithSecret(encryptedData, config.APP_SECRET);
+    const text = decryptWithSecret(encryptedData, config.APP_SECRET);
+    return { text, needsMigration: false };
   } catch (err) {
     // Fallback to APP_SECRET_PREVIOUS if it exists
     if (config.APP_SECRET_PREVIOUS) {
       try {
-        return decryptWithSecret(encryptedData, config.APP_SECRET_PREVIOUS);
+        const text = decryptWithSecret(
+          encryptedData,
+          config.APP_SECRET_PREVIOUS,
+        );
+        return { text, needsMigration: true };
       } catch {
         throw new Error(
           "Decryption failed with both current and previous secrets",
