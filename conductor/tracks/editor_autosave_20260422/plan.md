@@ -41,7 +41,7 @@
 - [x] Task: Create Auto-save store in Zustand dd50bac2
     - [ ] Implement `useEditorStore` with `isDirty`, `lastSaved`, and `offlineQueue`
     - [ ] Add logic to persist `offlineQueue` to IndexedDB
-- [ ] Task: Implement debounced save logic
+- [x] Task: Implement debounced save logic afd5ffbc
     - [ ] Create a hook or utility for debounced auto-save (2s)
     - [ ] Integrate save logic with Tiptap's `onUpdate`
 - [ ] Task: Implement background sync logic
