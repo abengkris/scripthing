@@ -15,17 +15,17 @@
     - [x] Create base page objects or helpers
 - [x] Task: Conductor - User Manual Verification 'Infrastructure Setup' (Protocol in workflow.md) 55d44b4
 
-## Phase 2: Backend Unit & Integration Tests
-- [ ] Task: Implement tests for Auth Service & Routes
-    - [ ] Write failing tests for login/register/refresh
-    - [ ] Ensure existing implementation passes
-- [ ] Task: Implement tests for Project & Script Services
-    - [ ] Write failing tests for CRUD operations
-    - [ ] Ensure existing implementation passes
-- [ ] Task: Implement tests for AI Service & Providers
-    - [ ] Write failing tests for each AI provider (OpenAI, Anthropic, Gemini, Ollama)
-    - [ ] Mock external API calls
-- [ ] Task: Conductor - User Manual Verification 'Backend Tests' (Protocol in workflow.md)
+## Phase 2: Backend Unit & Integration Tests [checkpoint: 9d283e9]
+- [x] Task: Implement tests for Auth Service & Routes 9d283e9
+    - [x] Write failing tests for login/register/refresh
+    - [x] Ensure existing implementation passes
+- [x] Task: Implement tests for Project & Script Services 9d283e9
+    - [x] Write failing tests for CRUD operations
+    - [x] Ensure existing implementation passes
+- [x] Task: Implement tests for AI Service & Providers 9d283e9
+    - [x] Write failing tests for each AI provider (OpenAI, Anthropic, Gemini, Ollama)
+    - [x] Mock external API calls
+- [x] Task: Conductor - User Manual Verification 'Backend Tests' (Protocol in workflow.md) 9d283e9
 
 ## Phase 3: Frontend Unit & Integration Tests
 - [ ] Task: Implement tests for Global Store (Zustand)
