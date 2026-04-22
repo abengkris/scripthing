@@ -36,18 +36,18 @@
     - [x] Test Tiptap custom extensions in isolation
 - [x] Task: Conductor - User Manual Verification 'Frontend Tests' (Protocol in workflow.md) e577539
 
-## Phase 4: Playwright E2E Tests
-- [ ] Task: Critical Path 1 - Editor Auto-Save & Offline Recovery
-    - [ ] Implement test script with 2s debounce validation
-    - [ ] Implement network failure/recovery simulation
-- [ ] Task: Critical Path 2 - AI SSE Streaming
-    - [ ] Implement test script with SSE mocking
-    - [ ] Validate progressive UI rendering
-- [ ] Task: Critical Path 3 - Tiptap Auto-Formatting
-    - [ ] Implement test script for scene headings and action transitions
-- [ ] Task: Critical Path 4 - Silent Token Refresh
-    - [ ] Implement test script for 401 -> refresh -> retry flow
-- [ ] Task: Conductor - User Manual Verification 'E2E Tests' (Protocol in workflow.md)
+## Phase 4: Playwright E2E Tests [checkpoint: 8662e81]
+- [x] Task: Critical Path 1 - Editor Auto-Save & Offline Recovery 8662e81
+    - [x] Implement test script with 2s debounce validation
+    - [x] Implement network failure/recovery simulation
+- [x] Task: Critical Path 2 - AI SSE Streaming 8662e81
+    - [x] Implement test script with SSE mocking
+    - [x] Validate progressive UI rendering
+- [x] Task: Critical Path 3 - Tiptap Auto-Formatting 8662e81
+    - [x] Implement test script for scene headings and action transitions
+- [x] Task: Critical Path 4 - Silent Token Refresh 8662e81
+    - [x] Implement test script for 401 -> refresh -> retry flow
+- [x] Task: Conductor - User Manual Verification 'E2E Tests' (Protocol in workflow.md) 8662e81
 
 ## Phase 5: Finalization & Coverage
 - [ ] Task: Generate and Audit Coverage Report
