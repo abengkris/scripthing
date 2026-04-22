@@ -40,3 +40,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Phase 6 - Security Hardening & DevOps: Security headers, Key rotation, Backups, Logging**
 *Link: [./tracks/security_hardening_20260422/](./tracks/security_hardening_20260422/)*
+
+---
+
+- [ ] **Track: Phase 7 - Performance Optimization (Lazy loading, virtual scrolling, pagination)**
+*Link: [./tracks/performance_opt_20260422/](./tracks/performance_opt_20260422/)*
