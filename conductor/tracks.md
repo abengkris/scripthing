@@ -29,5 +29,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Phase 4 - Export & Polish: PDF/FDX export and Docker setup**
+- [x] **Track: Phase 4 - Export & Polish: PDF/FDX export and Docker setup**
 *Link: [./tracks/phase4_export_polish_20260422/](./tracks/phase4_export_polish_20260422/)*

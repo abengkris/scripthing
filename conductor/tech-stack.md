@@ -26,3 +26,11 @@
 | Zod | Schema validation |
 | JWT (jose) | Stateless authentication |
 | bcrypt | Password hashing |
+| Puppeteer | Server-side PDF rendering |
+
+## Infrastructure
+| Technology | Purpose |
+|---|---|
+| Docker | Containerization |
+| Docker Compose | Multi-container orchestration |
+| Nginx | Reverse proxy with SSE support |
