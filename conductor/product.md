@@ -10,6 +10,7 @@ To provide a distraction-free, professional-grade screenplay writing experience 
 - Local-first architecture using a SQLite database.
 - Seamless AI integration (Chat, Suggest, Rewrite) for an optional writing boost.
 - High-quality exports (PDF, Final Draft .fdx).
+- Enterprise-grade security features including automated database backups, structured logging, and automated graceful secret rotation.
 
 ## Target Audience
 - Screenwriters, playwrights, and podcast creators who prioritize privacy and local data control.

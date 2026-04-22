@@ -26,6 +26,7 @@
 | Zod | Schema validation |
 | JWT (jose) | Stateless authentication |
 | bcrypt | Password hashing |
+| pino | Structured, asynchronous logging |
 | Puppeteer | Server-side PDF rendering |
 
 ## Infrastructure
@@ -33,4 +34,5 @@
 |---|---|
 | Docker | Containerization |
 | Docker Compose | Multi-container orchestration |
+| SQLite (`.backup`) | Automated database backup script |
 | Nginx | Reverse proxy with SSE support |
