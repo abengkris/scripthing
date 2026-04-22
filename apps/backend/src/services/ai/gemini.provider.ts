@@ -1,10 +1,10 @@
-// apps/backend/src/services/ai/gemini.provider.ts
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { BaseAIProvider, AICompletionOptions, AICompletionResult } from './base.provider';
+import { BaseAIProvider } from './base.provider';
+import { AICompletionOptions, AICompletionResult, SUPPORTED_MODELS } from './types';
 
 export class GeminiProvider extends BaseAIProvider {
   readonly name = 'gemini';
-  readonly supportedModels = ['gemini-2.0-flash'];
+  readonly supportedModels = SUPPORTED_MODELS.gemini.models.map(m => m.id);
   private genAI: GoogleGenerativeAI;
 
   constructor(apiKey: string) {
@@ -12,36 +12,68 @@ export class GeminiProvider extends BaseAIProvider {
     this.genAI = new GoogleGenerativeAI(apiKey);
   }
 
-  async analyze(content: string): Promise<string> {
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-    const prompt = 'You are a professional screenplay writing assistant. Analyze the following screenplay content for plot, structure, or characters:\n\n' + content;
-    const result = await model.generateContent(prompt);
-    return result.response.text();
+  private transformMessages(messages: any[]) {
+    // Gemini's generateContent can take a single prompt string or a parts array.
+    // For simplicity in this implementation, we concatenate messages.
+    // A more advanced version would use the Chat session API.
+    return messages.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n\n');
   }
 
   async complete(options: AICompletionOptions): Promise<AICompletionResult> {
-    const model = this.genAI.getGenerativeModel({ model: options.model });
-    
-    // Convert messages to Gemini format
-    const prompt = options.messages.map(m => m.content).join('\n\n');
-    
+    const model = this.genAI.getGenerativeModel({
+      model: options.model,
+      generationConfig: {
+        temperature: options.temperature,
+        maxOutputTokens: options.maxTokens,
+      },
+    });
+
+    const prompt = this.transformMessages(options.messages);
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    
+    const response = result.response;
+
     return {
       content: response.text(),
       model: options.model,
       provider: this.name,
+      usage: {
+        promptTokens: result.response.usageMetadata?.promptTokenCount || 0,
+        completionTokens: result.response.usageMetadata?.candidatesTokenCount || 0,
+        totalTokens: result.response.usageMetadata?.totalTokenCount || 0,
+      },
     };
   }
 
-  async testConnection(apiKey: string): Promise<boolean> {
+  async *completeStream(options: AICompletionOptions): AsyncIterable<Partial<AICompletionResult>> {
+    const model = this.genAI.getGenerativeModel({
+      model: options.model,
+      generationConfig: {
+        temperature: options.temperature,
+        maxOutputTokens: options.maxTokens,
+      },
+    });
+
+    const prompt = this.transformMessages(options.messages);
+    const result = await model.generateContentStream(prompt);
+
+    for await (const chunk of result.stream) {
+      const content = chunk.text();
+      if (content) {
+        yield {
+          content,
+          model: options.model,
+          provider: this.name,
+        };
+      }
+    }
+  }
+
+  async testConnection(): Promise<boolean> {
     try {
-      const tempGenAI = new GoogleGenerativeAI(apiKey);
-      const model = tempGenAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-      await model.generateContent('ping');
+      const model = this.genAI.getGenerativeModel({ model: this.supportedModels[0] });
+      await model.generateContent({ contents: [{ role: 'user', parts: [{ text: 'test' }] }], generationConfig: { maxOutputTokens: 1 } });
       return true;
-    } catch {
+    } catch (error) {
       return false;
     }
   }

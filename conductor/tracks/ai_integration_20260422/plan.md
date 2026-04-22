@@ -3,26 +3,26 @@
 ## Phase 1: AI Provider Infrastructure & Backend (Backend)
 Focuses on the core AI provider logic, model support, and secure API key management.
 
-- [ ] Task: AI Security: Implement AES-256-GCM encryption for API keys
-    - [ ] Write unit tests for encryption/decryption utility
-    - [ ] Implement encryption/decryption using `APP_SECRET`
-    - [ ] Update `SettingsService` to encrypt/decrypt keys during save/load
-- [ ] Task: AI Provider Base Class and Model Definitions
-    - [ ] Define `BaseAIProvider` abstract class and common interfaces
-    - [ ] Define supported model configurations for OpenAI, Anthropic, Gemini, Ollama
-- [ ] Task: Concrete Provider Implementations
-    - [ ] Write tests for `OpenAIProvider`
-    - [ ] Implement `OpenAIProvider`
-    - [ ] Write tests for `AnthropicProvider`
-    - [ ] Implement `AnthropicProvider`
-    - [ ] Write tests for `GeminiProvider`
-    - [ ] Implement `GeminiProvider`
-    - [ ] Write tests for `OllamaProvider`
-    - [ ] Implement `OllamaProvider`
-- [ ] Task: AI Routing & SSE Middleware
-    - [ ] Implement AI controller with SSE support for `/ai/chat`
-    - [ ] Set up rate-limiting for AI endpoints
-    - [ ] Verify non-buffering SSE output in backend
+- [x] Task: AI Security: Implement AES-256-GCM encryption for API keys
+    - [x] Write unit tests for encryption/decryption utility
+    - [x] Implement encryption/decryption using `APP_SECRET`
+    - [x] Update `SettingsService` to encrypt/decrypt keys during save/load
+- [x] Task: AI Provider Base Class and Model Definitions
+    - [x] Define `BaseAIProvider` abstract class and common interfaces
+    - [x] Define supported model configurations for OpenAI, Anthropic, Gemini, Ollama
+- [x] Task: Concrete Provider Implementations
+    - [x] Write tests for `OpenAIProvider`
+    - [x] Implement `OpenAIProvider`
+    - [x] Write tests for `AnthropicProvider`
+    - [x] Implement `AnthropicProvider`
+    - [x] Write tests for `GeminiProvider`
+    - [x] Implement `GeminiProvider`
+    - [x] Write tests for `OllamaProvider`
+    - [x] Implement `OllamaProvider`
+- [x] Task: AI Routing & SSE Middleware
+    - [x] Implement AI controller with SSE support for `/ai/chat`
+    - [x] Set up rate-limiting for AI endpoints
+    - [x] Verify non-buffering SSE output in backend
 - [ ] Task: Conductor - User Manual Verification 'AI Provider Infrastructure & Backend' (Protocol in workflow.md) [checkpoint: ]
 
 ## Phase 2: Frontend AI Integration (Frontend)

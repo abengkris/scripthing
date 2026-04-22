@@ -1,11 +1,10 @@
 import { RegisterRequest, LoginRequest } from '@packages/shared/types/api.types';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db';
 import bcrypt from 'bcryptjs';
 import { SignJWT, jwtVerify } from 'jose';
 import { config } from '../config';
 import { AppError } from '../middleware/error.middleware';
 
-const prisma = new PrismaClient();
 const APP_SECRET = new TextEncoder().encode(config.APP_SECRET);
 
 export interface AuthTokens {
