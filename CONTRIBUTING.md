@@ -3,7 +3,7 @@
 First off, thank you for considering contributing to Scripthing! It's people like you that make Scripthing such a great tool for writers.
 
 ## Code of Conduct
-By participating in this project, you are expected to uphold our Code of Conduct (please see [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) - *coming soon*).
+By participating in this project, you are expected to uphold our Code of Conduct (please see [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)).
 
 ## How Can I Contribute?
 
