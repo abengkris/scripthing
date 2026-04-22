@@ -44,7 +44,7 @@ This document is the complete architecture guide for AI agents and developers wo
 ### Backend
 | Technology | Version | Purpose |
 |---|---|---|
-| Node.js | 20.x LTS | Runtime |
+| Node.js | 22.x LTS | Runtime |
 | Fastify | 4.x | HTTP framework |
 | TypeScript | 5.x | Type safety |
 | Prisma | 5.x | ORM |
@@ -75,8 +75,8 @@ This document is the complete architecture guide for AI agents and developers wo
 | pnpm workspaces | Monorepo package manager |
 ## 3. Quick Start for Developers
 ### Prerequisites
- * Node.js 20.x LTS
- * pnpm 9.x (npm install -g pnpm)
+ * Node.js 22.x LTS
+ * pnpm 10.x (npm install -g pnpm)
  * Docker & Docker Compose (optional, for containerized deployment)
 ### First-Time Setup
 ```bash

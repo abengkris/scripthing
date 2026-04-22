@@ -14,14 +14,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # In a production environment, you'd likely build and push images to a registry first.
       # Here we are using a simplified direct-to-VPS approach where the VPS handles 
       # its own compose pulling or building context.
 
       - name: Trigger VPS deployment via SSH
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
