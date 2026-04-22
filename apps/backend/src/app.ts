@@ -10,7 +10,19 @@ import { settingsRoutes } from "./routes/settings";
 import { aiRoutes } from "./routes/ai";
 
 export const buildApp = () => {
-  const fastify = Fastify({ logger: true });
+  const isProd = config.NODE_ENV === "production";
+  const fastify = Fastify({
+    logger: isProd
+      ? {
+          level: "info",
+        }
+      : {
+          level: "debug",
+          transport: {
+            target: "pino-pretty",
+          },
+        },
+  });
 
   fastify.register(helmet);
 
