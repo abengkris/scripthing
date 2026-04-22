@@ -1,0 +1,36 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deployment
+    runs-on: ubuntu-latest
+    # Optional: Wait for quality job to pass if integrated with ci.yml
+    # needs: [quality]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # In a production environment, you'd likely build and push images to a registry first.
+      # Here we are using a simplified direct-to-VPS approach where the VPS handles 
+      # its own compose pulling or building context.
+
+      - name: Trigger VPS deployment via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            # Pull latest code
+            cd /opt/scripthing
+            git pull origin main
+            # Execute deployment script
+            chmod +x scripts/deploy.sh
+            ./scripts/deploy.sh
