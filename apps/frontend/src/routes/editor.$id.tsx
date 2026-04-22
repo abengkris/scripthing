@@ -5,6 +5,8 @@ import { Button } from "../components/ui/button";
 import { api } from "../lib/api";
 import { FileDown } from "lucide-react";
 
+import { ThemeToggle } from "../components/layout/ThemeToggle";
+
 export const EditorPage = () => {
   const { id } = useParams<{ id: string }>();
 
@@ -32,6 +34,7 @@ export const EditorPage = () => {
           <SaveStatus />
         </div>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button variant="outline" size="sm" onClick={handleExportPdf}>
             <FileDown className="w-4 h-4 mr-2" />
             PDF

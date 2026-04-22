@@ -4,6 +4,7 @@
   "main": "dist/main.js",
   "scripts": {
     "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "type-check": "tsc --noEmit",
@@ -23,6 +24,7 @@
     "jose": "^6.2.2",
     "node-fetch": "^3.3.2",
     "openai": "^6.34.0",
+    "puppeteer": "^24.42.0",
     "zod": "^4.3.6",
     "zod-validation-error": "^5.0.0"
   },
