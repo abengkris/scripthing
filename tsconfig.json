@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./apps/frontend/src/*"],
+      "@scripthing/backend/*": ["./apps/backend/src/*"],
+      "@packages/shared/*": ["./packages/shared/src/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
