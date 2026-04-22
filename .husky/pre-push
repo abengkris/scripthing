@@ -4,21 +4,21 @@ echo "🔍 Running pre-push checks..."
 
 # Step 1: TypeScript type check
 echo "\n📘 Type checking shared..."
-pnpm --filter shared tsc --noEmit
+pnpm --filter @scripthing/shared run type-check
 if [ $? -ne 0 ]; then
   echo "❌ Type check failed in packages/shared. Push aborted."
   exit 1
 fi
 
 echo "📘 Type checking backend..."
-pnpm --filter backend tsc --noEmit
+pnpm --filter @scripthing/backend run type-check
 if [ $? -ne 0 ]; then
   echo "❌ Type check failed in apps/backend. Push aborted."
   exit 1
 fi
 
 echo "📘 Type checking frontend..."
-pnpm --filter frontend tsc --noEmit
+pnpm --filter frontend run type-check
 if [ $? -ne 0 ]; then
   echo "❌ Type check failed in apps/frontend. Push aborted."
   exit 1
@@ -26,14 +26,14 @@ fi
 
 # Step 2: Unit tests
 echo "\n🧪 Running backend unit tests..."
-pnpm --filter backend test --run
+pnpm --filter @scripthing/backend run test
 if [ $? -ne 0 ]; then
   echo "❌ Backend tests failed. Push aborted."
   exit 1
 fi
 
 echo "\n🧪 Running frontend unit tests..."
-pnpm --filter frontend test --run
+pnpm --filter frontend run test
 if [ $? -ne 0 ]; then
   echo "❌ Frontend tests failed. Push aborted."
   exit 1

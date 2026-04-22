@@ -15,7 +15,12 @@ vi.mock('@tanstack/react-virtual', () => ({
     }),
 }));
 vi.mock('@tiptap/react', () => ({
-    useEditor: vi.fn().mockReturnValue({}),
+    useEditor: vi.fn().mockReturnValue({
+        on: vi.fn(),
+        off: vi.fn(),
+        getText: vi.fn().mockReturnValue(''),
+        getJSON: vi.fn().mockReturnValue({}),
+    }),
     EditorContent: () => _jsx("div", { "data-testid": "editor-content" }),
 }));
 // Mock hooks
