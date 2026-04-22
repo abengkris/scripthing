@@ -36,17 +36,17 @@
 
 ## Phase 3: Auto-save & Offline Sync
 - [x] Task: Implement IndexedDB persistence for offline queue b7984bd5
-    - [ ] Install `idb` or similar for easier IndexedDB access
-    - [ ] Create `apps/frontend/src/lib/db.ts` for storage logic
+    - [x] Install `idb` or similar for easier IndexedDB access
+    - [x] Create `apps/frontend/src/lib/db.ts` for storage logic
 - [x] Task: Create Auto-save store in Zustand dd50bac2
-    - [ ] Implement `useEditorStore` with `isDirty`, `lastSaved`, and `offlineQueue`
-    - [ ] Add logic to persist `offlineQueue` to IndexedDB
+    - [x] Implement `useEditorStore` with `isDirty`, `lastSaved`, and `offlineQueue`
+    - [x] Add logic to persist `offlineQueue` to IndexedDB
 - [x] Task: Implement debounced save logic afd5ffbc
-    - [ ] Create a hook or utility for debounced auto-save (2s)
-    - [ ] Integrate save logic with Tiptap's `onUpdate`
-- [ ] Task: Implement background sync logic
-    - [ ] Create a sync worker or service that retries failed saves when online
-    - [ ] Listen for `online` events and window focus
+    - [x] Create a hook or utility for debounced auto-save (2s)
+    - [x] Integrate save logic with Tiptap's `onUpdate`
+- [x] Task: Implement background sync logic 6ef1d6e0
+    - [x] Create a sync worker or service that retries failed saves when online
+    - [x] Listen for `online` events and window focus
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Auto-save & Offline Sync' (Protocol in workflow.md)
 
 ## Phase 4: UI Status Indicator
