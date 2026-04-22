@@ -8,7 +8,7 @@
 - [ ] Conductor - User Manual Verification 'Security Headers & Observability' (Protocol in workflow.md)
 
 ## Phase 2: Graceful Key Rotation
-- [ ] Update key decryption utility to check `APP_SECRET` and fallback to `APP_SECRET_PREVIOUS`.
+- [x] Update key decryption utility to check `APP_SECRET` and fallback to `APP_SECRET_PREVIOUS`. 5f4c019
 - [ ] Implement lazy migration logic upon successful decryption with `APP_SECRET_PREVIOUS`.
 - [ ] Add unit tests to simulate key rotation scenarios and data migration.
 - [ ] Conductor - User Manual Verification 'Graceful Key Rotation' (Protocol in workflow.md)
