@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { validate } from '../middleware/validation.middleware';
-import { setupErrorMiddleware } from '../middleware/error.middleware';
+import { errorMiddleware } from '../middleware/error.middleware';
 import { buildApp } from '../app';
 import { describe, it, expect, beforeAll } from 'vitest';
 
@@ -12,7 +12,7 @@ describe('Validation Middleware', () => {
   });
 
   beforeAll(async () => {
-    setupErrorMiddleware(app);
+    errorMiddleware(app);
     try {
         app.post('/test-validate', { preHandler: validate(schema) }, async (req, reply) => {
         reply.send(req.body);
@@ -39,6 +39,6 @@ describe('Validation Middleware', () => {
       payload: { name: 'John' }, // Missing age
     });
     expect(res.statusCode).toBe(400);
-    expect(JSON.parse(res.payload).error).toContain('age');
+    expect(JSON.parse(res.payload).message).toContain('age');
   });
 });
