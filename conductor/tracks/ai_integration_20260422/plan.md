@@ -40,7 +40,7 @@ Focuses on the AI Sidebar, SSE streaming client, and interactive UI elements.
     - [x] Implement real-time word/token count display during streaming
     - [x] Add Provider/Model badges to the generation UI
     - [x] Add "Stop Generation" button and state handling
-- [ ] Task: Conductor - User Manual Verification 'Frontend AI Integration' (Protocol in workflow.md) [checkpoint: ]
+- [x] Task: Conductor - User Manual Verification 'Frontend AI Integration' (Protocol in workflow.md) [checkpoint: 480e6e8]
 
 ## Phase 3: Testing, Security & Polish (E2E)
 Focuses on integrated testing, security audits, and UI polish.
