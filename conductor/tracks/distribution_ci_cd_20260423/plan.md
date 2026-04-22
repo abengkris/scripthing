@@ -1,7 +1,7 @@
 # Implementation Plan: Phase 9 - Distribution & CI/CD
 
 ## Phase 1: CI/CD Setup (GitHub Actions)
-- [ ] Task: Create `.github/workflows/ci.yml` for automated quality checks
+- [~] Task: Create `.github/workflows/ci.yml` for automated quality checks
     - [ ] Add step for `pnpm install` and cache setup
     - [ ] Add step for `pnpm lint` (all workspaces)
     - [ ] Add step for `pnpm typecheck` (all workspaces)

@@ -107,4 +107,20 @@ export const api = {
         body: body ? JSON.stringify(body) : undefined,
     }),
     delete: (url, options = {}) => request(url, { ...options, method: "DELETE" }),
+    download: async (url, filename, options = {}) => {
+        const { accessToken } = useAuthStore.getState();
+        const headers = new Headers(options.headers);
+        if (accessToken) {
+            headers.set("Authorization", `Bearer ${accessToken}`);
+        }
+        const res = await fetch(url, { ...options, headers });
+        if (!res.ok)
+            throw new Error("Download failed");
+        const blob = await res.blob();
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        window.URL.revokeObjectURL(link.href);
+    },
 };
