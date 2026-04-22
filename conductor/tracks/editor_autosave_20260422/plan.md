@@ -16,22 +16,22 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Tiptap Infrastructure & Nodes' (Protocol in workflow.md)
 
 ## Phase 2: Screenplay Formatting & Layout
-- [ ] Task: Implement auto-format rules (Tab/Enter behavior)
-    - [ ] Implement Enter behavior: Character -> Dialogue
-    - [ ] Implement Enter behavior: Dialogue -> Action
-    - [ ] Implement Enter behavior: Parenthetical -> Dialogue
-    - [ ] Implement Tab behavior: Action -> Character
-    - [ ] Implement Tab behavior: Dialogue -> Parenthetical
-- [ ] Task: Implement keyboard shortcuts for element types
-    - [ ] Cmd/Ctrl + 1: Scene Heading
-    - [ ] Cmd/Ctrl + 2: Action
-    - [ ] Cmd/Ctrl + 3: Character
-    - [ ] Cmd/Ctrl + 4: Parenthetical
-    - [ ] Cmd/Ctrl + 5: Dialogue
-    - [ ] Cmd/Ctrl + 6: Transition
-- [ ] Task: Styling for "Page View"
-    - [ ] Create CSS for screenplay formatting (margins, alignment, font)
-    - [ ] Implement page-like container with shadows and padding
+- [x] Task: Implement auto-format rules (Tab/Enter behavior) 036a460
+    - [x] Implement Enter behavior: Character -> Dialogue
+    - [x] Implement Enter behavior: Dialogue -> Action
+    - [x] Implement Enter behavior: Parenthetical -> Dialogue
+    - [x] Implement Tab behavior: Action -> Character
+    - [x] Implement Tab behavior: Dialogue -> Parenthetical
+- [x] Task: Implement keyboard shortcuts for element types 036a460
+    - [x] Cmd/Ctrl + 1: Scene Heading
+    - [x] Cmd/Ctrl + 2: Action
+    - [x] Cmd/Ctrl + 3: Character
+    - [x] Cmd/Ctrl + 4: Parenthetical
+    - [x] Cmd/Ctrl + 5: Dialogue
+    - [x] Cmd/Ctrl + 6: Transition
+- [x] Task: Styling for "Page View" 036a460
+    - [x] Create CSS for screenplay formatting (margins, alignment, font)
+    - [x] Implement page-like container with shadows and padding
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Screenplay Formatting & Layout' (Protocol in workflow.md)
 
 ## Phase 3: Auto-save & Offline Sync
