@@ -45,11 +45,11 @@ Focuses on the AI Sidebar, SSE streaming client, and interactive UI elements.
 ## Phase 3: Testing, Security & Polish (E2E)
 Focuses on integrated testing, security audits, and UI polish.
 
-- [ ] Task: Integration & Security Audit
-    - [ ] Verify E2E AI flow for all providers
-    - [ ] Perform security audit for API key handling
-    - [ ] Ensure privacy guidelines (no logging) are met
-- [ ] Task: UI Polish & Dark Mode Support
-    - [ ] Refine sidebar animations and layout
-    - [ ] Ensure full dark mode compatibility for the AI Sidebar
+- [x] Task: Integration & Security Audit
+    - [x] Verify E2E AI flow for all providers
+    - [x] Perform security audit for API key handling
+    - [x] Ensure privacy guidelines (no logging) are met
+- [x] Task: UI Polish & Dark Mode Support
+    - [x] Refine sidebar animations and layout
+    - [x] Ensure full dark mode compatibility for the AI Sidebar
 - [ ] Task: Conductor - User Manual Verification 'Testing, Security & Polish' (Protocol in workflow.md) [checkpoint: ]
