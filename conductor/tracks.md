@@ -34,5 +34,9 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: Phase 5 - Testing & QA: Unit, Integration, and E2E Tests**
-*Link: [./tracks/testing_qa_20260422/](./tracks/testing_qa_20260422/)*
+
+
+---
+
+- [ ] **Track: Phase 6 - Security Hardening & DevOps: Security headers, Key rotation, Backups, Logging**
+*Link: [./tracks/security_hardening_20260422/](./tracks/security_hardening_20260422/)*
