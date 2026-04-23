@@ -39,11 +39,11 @@ jobs:
       - name: Type check
         run: pnpm -r run type-check
 
-      - name: Unit & Integration Tests
-        run: pnpm -r test
-
       - name: Install Playwright Browsers
         run: pnpm --filter e2e exec playwright install --with-deps
+
+      - name: Unit & Integration Tests
+        run: pnpm -r test
 
       - name: E2E Tests
         run: |
