@@ -39,7 +39,6 @@ const Editor = () => {
       attributes: {
         class:
           "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none screenplay-editor",
-        "data-testid": "editor-content",
       },
     },
   });
@@ -101,7 +100,10 @@ const Editor = () => {
             }}
           >
             <div className="bg-white mx-auto shadow-lg min-h-[1056px] w-[816px] p-[1in] screenplay-page border border-gray-200">
-              <EditorContent editor={editor} />
+              <EditorContent
+                editor={editor}
+                data-testid="editor-content-wrapper"
+              />
             </div>
             <WordCount editor={editor} />
           </div>
