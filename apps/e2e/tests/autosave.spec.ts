@@ -10,7 +10,7 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
     await page.goto('/editor/script1');
 
     // 2. Typing should trigger auto-save after debounce (2s)
-    await page.fill('.tiptap', 'Hello world');
+    await page.fill('.screenplay-editor', 'Hello world');
     
     // Check status becomes "saving"
     await expect(page.locator('.save-status')).toContainText('saving');
