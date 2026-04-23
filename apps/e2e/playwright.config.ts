@@ -22,6 +22,11 @@ export default defineConfig({
       command: 'pnpm --filter backend dev',
       url: 'http://localhost:3001/api/v1/health',
       reuseExistingServer: !process.env.CI,
+      env: {
+        DATABASE_URL: 'file:./test.db',
+        APP_SECRET: 'test-secret-must-be-32-chars-long-!!!',
+        NODE_ENV: 'test',
+      },
     },
     {
       command: 'pnpm --filter frontend dev',
