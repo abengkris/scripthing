@@ -18,28 +18,40 @@ const SaveStatus = () => {
   switch (saveStatus) {
     case "saving":
       return (
-        <div className="flex items-center gap-2 text-blue-600 animate-pulse">
+        <div
+          data-testid="save-status"
+          className="flex items-center gap-2 text-blue-600 animate-pulse"
+        >
           <CloudUpload size={16} />
           <span className="text-sm font-medium">Saving...</span>
         </div>
       );
     case "saved":
       return (
-        <div className="flex items-center gap-2 text-green-600">
+        <div
+          data-testid="save-status"
+          className="flex items-center gap-2 text-green-600"
+        >
           <CloudCheck size={16} />
           <span className="text-sm font-medium">All changes saved</span>
         </div>
       );
     case "error":
       return (
-        <div className="flex items-center gap-2 text-red-600">
+        <div
+          data-testid="save-status"
+          className="flex items-center gap-2 text-red-600"
+        >
           <CloudAlert size={16} />
           <span className="text-sm font-medium">Error saving changes</span>
         </div>
       );
     case "offline":
       return (
-        <div className="flex items-center gap-2 text-gray-500">
+        <div
+          data-testid="save-status"
+          className="flex items-center gap-2 text-gray-500"
+        >
           <CloudOff size={16} />
           <span className="text-sm font-medium">Offline</span>
         </div>

@@ -13,19 +13,19 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
     await page.fill('.screenplay-editor', 'Hello world');
     
     // Check status becomes "saving"
-    await expect(page.locator('.save-status')).toContainText('saving');
-    
+    await expect(page.locator('[data-testid="save-status"]')).toContainText('Saving');
+
     // After 2s, check status becomes "saved"
     await page.waitForTimeout(2500);
-    await expect(page.locator('.save-status')).toContainText('saved');
+    await expect(page.locator('[data-testid="save-status"]')).toContainText('saved');
 
     // 3. Simulate offline
     await page.route('/api/v1/scripts/script1', (route) => route.abort('internetdisconnected'));
-    
-    await page.fill('.tiptap', 'Offline content');
-    
+
+    await page.fill('.screenplay-editor', 'Offline content');
+
     // Check status becomes "error" or "offline"
-    await expect(page.locator('.save-status')).toContainText(/error|offline/);
+    await expect(page.locator('[data-testid="save-status"]')).toContainText(/Error|Offline/);
 
     // 4. Restore online
     await page.route('/api/v1/scripts/script1', async (route) => {
@@ -34,6 +34,6 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
 
     // Check it eventually saves
     await page.waitForTimeout(3000);
-    await expect(page.locator('.save-status')).toContainText('saved');
+    await expect(page.locator('[data-testid="save-status"]')).toContainText('saved');
   });
 });
