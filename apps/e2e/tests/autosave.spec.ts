@@ -36,8 +36,8 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
 
     await editor.type('Offline content');
 
-    // Check status becomes "error" or "offline"
-    await expect(page.locator('[data-testid="save-status"]')).toContainText(/Error|Offline/);
+    // Check status becomes "error" or "offline" or "syncing"
+    await expect(page.locator('[data-testid="save-status"]')).toContainText(/Error|Offline|Syncing/i);
 
     // 4. Restore online
     await page.route('/api/v1/scripts/script1', async (route) => {

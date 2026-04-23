@@ -6,7 +6,10 @@ const SaveStatus = () => {
 
   if (offlineQueue.length > 0) {
     return (
-      <div className="flex items-center gap-2 text-amber-600 animate-pulse">
+      <div
+        data-testid="save-status"
+        className="flex items-center gap-2 text-amber-600 animate-pulse"
+      >
         <CloudUpload size={16} />
         <span className="text-sm font-medium">
           Syncing offline changes ({offlineQueue.length})...
