@@ -58,5 +58,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: bug fix: Resolve all TypeScript type-checking errors in the apps/backend and packages/shared directories reported in the CI run on 2026-04-22.**
+- [x] **Track: bug fix: Resolve all TypeScript type-checking errors in the apps/backend and packages/shared directories reported in the CI run on 2026-04-22.**
 *Link: [./tracks/fix_ci_errors_20260423/](./tracks/fix_ci_errors_20260423/)*
