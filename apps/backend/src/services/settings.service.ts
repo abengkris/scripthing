@@ -57,10 +57,10 @@ export async function getSettings(
   for (const field of API_KEY_FIELDS) {
     if (result[field]) {
       if (options.decryptKeys) {
-        const { text } = decrypt(result[field]);
+        const { text } = decrypt(result[field] as string);
         result[field] = text;
       } else {
-        result[field] = maskKey(result[field]);
+        result[field] = maskKey(result[field] as string);
       }
     }
   }

@@ -1,17 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 export const createProject = (
   prisma: PrismaClient,
   userId: string,
-  data: Record<string, unknown>,
+  data: Prisma.ProjectCreateInput,
 ) =>
   prisma.project.create({
-    data: { ...data, userId } as {
-      email?: string;
-      name: string;
-      userId: string;
-      [key: string]: any;
-    },
+    data: { ...data, user: { connect: { id: userId } } },
   });
 
 export const listProjects = (prisma: PrismaClient, userId: string) =>
@@ -23,11 +18,11 @@ export const getProject = (prisma: PrismaClient, id: string) =>
 export const updateProject = (
   prisma: PrismaClient,
   id: string,
-  data: Record<string, unknown>,
+  data: Prisma.ProjectUpdateInput,
 ) =>
   prisma.project.update({
     where: { id },
-    data: data as { name?: string; [key: string]: any },
+    data,
   });
 
 export const deleteProject = (prisma: PrismaClient, id: string) =>

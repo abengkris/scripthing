@@ -7,7 +7,7 @@ export const errorMiddleware = (fastify: FastifyInstance) => {
       return reply.status(400).send({
         statusCode: 400,
         message: "Validation error",
-        errors: error.errors.map(
+        errors: (error as any).issues.map(
           (e: { path: (string | number)[]; message: string }) => ({
             field: e.path.join("."),
             message: e.message,

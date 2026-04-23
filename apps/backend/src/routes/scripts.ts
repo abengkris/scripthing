@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { validate } from "../middleware/validation.middleware";
+import { generatePdf, generateFdx } from "../services/export.service";
 
 const scriptSchema = z.object({
   title: z.string().min(1),
@@ -43,7 +44,6 @@ export const scriptRoutes = async (app: FastifyInstance) => {
         '<p class="scene-heading">INT. CAFE - DAY</p><p class="action">The sun shines through the window.</p>',
     };
 
-    const { generatePdf } = await import("../services/export.service");
     const pdfBuffer = await generatePdf(script);
 
     reply
@@ -64,7 +64,6 @@ export const scriptRoutes = async (app: FastifyInstance) => {
       content: {},
     };
 
-    const { generateFdx } = await import("../services/export.service");
     const fdxContent = await generateFdx(script);
 
     reply

@@ -16,10 +16,13 @@ export default async function (fastify: FastifyInstance) {
   fastify.post(
     "/register",
     { preValidation: validate(registerSchema) },
-    async (req: FastifyRequest<{ Body: unknown }>, reply: FastifyReply) => {
-      const result = await register(
-        req.body as { email: string; password: string; name?: string },
-      ); // cast to expected type
+    async (req, reply) => {
+      const body = req.body as {
+        email: string;
+        password: string;
+        name?: string;
+      };
+      const result = await register(body);
       reply.status(201).send({ success: true, data: result });
     },
   );
@@ -27,10 +30,9 @@ export default async function (fastify: FastifyInstance) {
   fastify.post(
     "/login",
     { preValidation: validate(loginSchema) },
-    async (req: FastifyRequest<{ Body: unknown }>, reply: FastifyReply) => {
-      const result = await login(
-        req.body as { email: string; password: string },
-      );
+    async (req, reply) => {
+      const body = req.body as { email: string; password: string };
+      const result = await login(body);
       reply.status(200).send({ success: true, data: result });
     },
   );
@@ -38,10 +40,9 @@ export default async function (fastify: FastifyInstance) {
   fastify.post(
     "/refresh",
     { preValidation: validate(refreshSchema) },
-    async (req: FastifyRequest<{ Body: unknown }>, reply: FastifyReply) => {
-      const result = await refresh(
-        (req.body as { refreshToken: string }).refreshToken,
-      );
+    async (req, reply) => {
+      const body = req.body as { refreshToken: string };
+      const result = await refresh(body.refreshToken);
       reply.status(200).send({ success: true, data: result });
     },
   );

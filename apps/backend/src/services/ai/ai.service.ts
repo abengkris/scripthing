@@ -23,18 +23,18 @@ export async function getProvider(
     case "openai":
       if (!settings.openaiApiKey)
         throw new AppError(400, "OpenAI API Key not configured");
-      return new OpenAIProvider(settings.openaiApiKey);
+      return new OpenAIProvider(settings.openaiApiKey as string);
     case "anthropic":
       if (!settings.anthropicApiKey)
         throw new AppError(400, "Anthropic API Key not configured");
-      return new AnthropicProvider(settings.anthropicApiKey);
+      return new AnthropicProvider(settings.anthropicApiKey as string);
     case "gemini":
       if (!settings.geminiApiKey)
         throw new AppError(400, "Gemini API Key not configured");
-      return new GeminiProvider(settings.geminiApiKey);
+      return new GeminiProvider(settings.geminiApiKey as string);
     case "ollama":
       return new OllamaProvider(
-        settings.ollamaEndpoint || "http://localhost:11434",
+        (settings.ollamaEndpoint as string) || "http://localhost:11434",
       );
     default:
       throw new AppError(400, `Unknown provider: "${providerName}"`);

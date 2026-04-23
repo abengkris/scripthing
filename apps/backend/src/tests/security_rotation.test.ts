@@ -18,11 +18,9 @@ describe("Graceful Key Rotation", () => {
     config.APP_SECRET_PREVIOUS = "old-secret-1234567890123456789012345678";
 
     const tempSecret = config.APP_SECRET;
-    // @ts-expect-error: Required for test-only modification of immutable config
-    config.APP_SECRET = config.APP_SECRET_PREVIOUS;
+    (config as any).APP_SECRET = config.APP_SECRET_PREVIOUS;
     const encrypted = encrypt(originalText);
-    // @ts-expect-error: Required for test-only modification of immutable config
-    config.APP_SECRET = tempSecret;
+    (config as any).APP_SECRET = tempSecret;
 
     const result = decrypt(encrypted);
     expect(result.text).toBe(originalText);
