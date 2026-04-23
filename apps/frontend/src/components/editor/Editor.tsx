@@ -100,7 +100,7 @@ const Editor = () => {
             }}
           >
             <div className="bg-white mx-auto shadow-lg min-h-[1056px] w-[816px] p-[1in] screenplay-page border border-gray-200">
-              <EditorContent editor={editor} />
+              <EditorContent editor={editor} data-testid="editor-content" />
             </div>
             <WordCount editor={editor} />
           </div>
