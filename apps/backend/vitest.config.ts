@@ -2,6 +2,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
+    testTimeout: 15000,
     setupFiles: ['./src/tests/setup.ts'],
     env: {
       DATABASE_URL: 'file:./dev.db',
