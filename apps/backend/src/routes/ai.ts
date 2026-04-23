@@ -1,9 +1,11 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
+import rateLimit from "@fastify/rate-limit";
 import { validate } from "../middleware/validation.middleware";
 import { authMiddleware } from "../middleware/auth.middleware";
 import * as aiService from "../services/ai/ai.service";
 import { prisma } from "../db";
+import { config } from "../config";
 
 const chatSchema = z.object({
   provider: z.string(),
@@ -33,6 +35,12 @@ interface ChatRequest {
 }
 
 export const aiRoutes = async (app: FastifyInstance) => {
+  await app.register(rateLimit, {
+    max: config.AI_RATE_LIMIT_RPM,
+    timeWindow: "1 minute",
+    keyGenerator: (request) => request.headers.authorization || request.ip,
+  });
+
   app.addHook("preHandler", authMiddleware);
 
   // POST /ai/chat

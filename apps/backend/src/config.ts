@@ -12,6 +12,7 @@ const envSchema = z.object({
   APP_SECRET_PREVIOUS: z.string().optional(),
   JWT_EXPIRES_IN: z.string().default("7d"),
   FRONTEND_URL: z.string().default("http://localhost:5173"),
+  AI_RATE_LIMIT_RPM: z.coerce.number().default(20),
 });
 
 export const config = envSchema.parse(process.env);
