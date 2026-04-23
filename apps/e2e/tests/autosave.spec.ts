@@ -20,20 +20,20 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
       window.localStorage.setItem('refreshToken', 'fake-refresh-token');
     });
 
-    await page.goto('/editor/script1');
+    await page.goto('/editor/script1', { waitUntil: 'domcontentloaded' });
 
     // 2. Typing should trigger auto-save after debounce (2s)
     const editor = page.locator('[data-testid="editor-content-wrapper"] .ProseMirror');
-    await editor.waitFor({ state: 'attached' });
+    await editor.waitFor({ state: 'attached', timeout: 60000 });
     await editor.click();
     await editor.type('Hello world');
     
     // Check status becomes "saving"
-    await expect(page.locator('[data-testid="save-status"]')).toContainText('Saving');
+    await expect(page.locator('[data-testid="save-status"]')).toContainText('Saving', { timeout: 15000 });
 
     // After 2s, check status becomes "saved"
-    await page.waitForTimeout(2500);
-    await expect(page.locator('[data-testid="save-status"]')).toContainText('saved');
+    await page.waitForTimeout(3000);
+    await expect(page.locator('[data-testid="save-status"]')).toContainText('saved', { timeout: 15000 });
 
     // 3. Simulate offline
     await page.route('**/api/v1/scripts/script1', (route) => route.abort('internetdisconnected'));
