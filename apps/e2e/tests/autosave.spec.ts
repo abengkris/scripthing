@@ -12,7 +12,8 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
 
     // Mock local storage to simulate being logged in
     await page.addInitScript(() => {
-      window.localStorage.setItem('auth-storage', JSON.stringify({ state: { user: { id: 'u1', email: 'test@test.com' }, accessToken: 'fake-token' }, version: 0 }));
+      window.localStorage.setItem('accessToken', 'fake-token');
+      window.localStorage.setItem('refreshToken', 'fake-refresh-token');
     });
 
     await page.goto('/editor/script1');
