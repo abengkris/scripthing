@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'pnpm --filter backend dev',
+      command: 'pnpm --filter backend exec prisma db push && pnpm --filter backend dev',
       url: 'http://localhost:3001/api/v1/health',
       reuseExistingServer: !process.env.CI,
       env: {
