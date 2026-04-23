@@ -45,7 +45,10 @@ describe("API Client", () => {
       json: async () => ({ data: { success: true } }),
     });
 
-    const result = await api.get("/test");
+    interface SuccessResponse {
+      success: boolean;
+    }
+    const result = (await api.get("/test")) as SuccessResponse;
     expect(result.success).toBe(true);
     expect(fetch).toHaveBeenCalledTimes(3);
   });
