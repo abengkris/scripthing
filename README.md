@@ -17,14 +17,14 @@
 - **Self-Hostable**: Easily deploy to any VPS using Docker Compose.
 
 ## Tech Stack
-- **Frontend**: React 19, TypeScript, Vite, Tiptap (ProseMirror), Zustand, TanStack Query, TailwindCSS.
-- **Backend**: Node.js 20, Fastify, Prisma, SQLite (better-sqlite3), Zod, Pino.
+- **Frontend**: React 18.x, TypeScript, Vite, Tiptap (ProseMirror), Zustand, TanStack Query, TailwindCSS.
+- **Backend**: Node.js 22.x LTS, Fastify, Prisma, SQLite (better-sqlite3), Zod, Pino.
 - **DevOps**: Docker, GitHub Actions, Nginx.
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 20.x LTS
+- Node.js 22.x LTS
 - pnpm 10.x (`npm install -g pnpm`)
 - Docker & Docker Compose (optional, for self-hosting)
 
@@ -45,8 +45,12 @@
    *Edit `apps/backend/.env` and set `APP_SECRET` to a random 32-character string.*
 4. **Initialize database**:
    ```bash
-   pnpm --filter @scripthing/backend run seed
+   pnpm --filter backend db:migrate
+   pnpm --filter backend db:seed
    ```
+   *This creates a ready-to-use demo account:*
+   - *Email: `demo@scripthing.local`*
+   - *Password: `demo1234`*
 5. **Start development server**:
    ```bash
    pnpm run dev
@@ -71,6 +75,7 @@
    docker compose up -d
    ```
 3. **Nginx Configuration**: For Production/VPS, use the provided `nginx.conf` behind a reverse proxy like Nginx or Caddy.
+   *Note: To ensure the AI typing effect (Server-Sent Events) works instantly, you must disable Nginx buffering for the `/api/v1/ai/` location in your configuration (`proxy_buffering off;`).*
 
 ## Backup & Restore
 
