@@ -5,6 +5,7 @@ import { authMiddleware } from "../middleware/auth.middleware";
 import { validate } from "../middleware/validation.middleware";
 import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
+import rateLimit from "@fastify/rate-limit";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,11 @@ const refreshSchema = z.object({
 });
 
 export default async function (fastify: FastifyInstance) {
+  await fastify.register(rateLimit, {
+    max: 10,
+    timeWindow: "1 minute",
+  });
+
   fastify.post(
     "/register",
     { preValidation: validate(registerSchema) },
