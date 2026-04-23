@@ -1,8 +1,11 @@
 /// <reference types="vitest" />
-import { defineConfig, UserConfig } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -20,9 +23,10 @@ export default defineConfig({
       },
     },
   },
+  // @ts-expect-error - vitest types not automatically picked up by defineConfig
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
   },
-} as UserConfig)
+})
