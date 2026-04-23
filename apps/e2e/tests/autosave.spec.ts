@@ -3,8 +3,16 @@ import { test, expect } from '@playwright/test';
 test.describe('Editor Auto-Save & Offline Recovery', () => {
   test('should debounce save and handle offline states', async ({ page }) => {
     // 1. Setup mocks
+    await page.route('/api/v1/auth/me', async (route) => {
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, data: { id: 'u1', email: 'test@test.com' } }) });
+    });
     await page.route('/api/v1/scripts/script1', async (route) => {
-      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, data: { id: 'script1', title: 'Test Script', content: {} } }) });
+    });
+
+    // Mock local storage to simulate being logged in
+    await page.addInitScript(() => {
+      window.localStorage.setItem('auth-storage', JSON.stringify({ state: { user: { id: 'u1', email: 'test@test.com' }, accessToken: 'fake-token' }, version: 0 }));
     });
 
     await page.goto('/editor/script1');
@@ -25,7 +33,7 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
     // 3. Simulate offline
     await page.route('/api/v1/scripts/script1', (route) => route.abort('internetdisconnected'));
 
-    await page.fill('.screenplay-editor', 'Offline content');
+    await editor.type('Offline content');
 
     // Check status becomes "error" or "offline"
     await expect(page.locator('[data-testid="save-status"]')).toContainText(/Error|Offline/);
