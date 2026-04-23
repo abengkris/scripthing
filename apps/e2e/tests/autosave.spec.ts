@@ -11,6 +11,7 @@ test.describe('Editor Auto-Save & Offline Recovery', () => {
 
     // 2. Typing should trigger auto-save after debounce (2s)
     const editor = page.locator('[data-testid="editor-content"]');
+    await editor.waitFor({ state: 'attached' });
     await editor.click();
     await editor.type('Hello world');
     
