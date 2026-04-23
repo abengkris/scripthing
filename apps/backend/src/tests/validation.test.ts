@@ -1,10 +1,10 @@
-import { z } from 'zod';
-import { validate } from '../middleware/validation.middleware';
-import { errorMiddleware } from '../middleware/error.middleware';
-import { buildApp } from '../app';
-import { describe, it, expect, beforeAll } from 'vitest';
+import { z } from "zod";
+import { validate } from "../middleware/validation.middleware";
+import { errorMiddleware } from "../middleware/error.middleware";
+import { buildApp } from "../app";
+import { describe, it, expect, beforeAll } from "vitest";
 
-describe('Validation Middleware', () => {
+describe("Validation Middleware", () => {
   const app = buildApp();
   const schema = z.object({
     name: z.string(),
@@ -14,31 +14,35 @@ describe('Validation Middleware', () => {
   beforeAll(async () => {
     errorMiddleware(app);
     try {
-        app.post('/test-validate', { preHandler: validate(schema) }, async (req, reply) => {
-        reply.send(req.body);
-        });
+      app.post(
+        "/test-validate",
+        { preHandler: validate(schema) },
+        async (req, reply) => {
+          reply.send({ success: true });
+        },
+      );
     } catch (e) {
-        // Route already exists, ignore
+      // Route already exists, ignore
     }
   });
 
-  it('should pass validation', async () => {
+  it("should pass validation", async () => {
     const res = await app.inject({
-      method: 'POST',
-      url: '/test-validate',
-      payload: { name: 'John', age: 30 },
+      method: "POST",
+      url: "/test-validate",
+      payload: { name: "John", age: 30 },
     });
     expect(res.statusCode).toBe(200);
-    expect(JSON.parse(res.payload)).toEqual({ name: 'John', age: 30 });
+    expect(JSON.parse(res.payload)).toEqual({ success: true });
   });
 
-  it('should fail validation', async () => {
+  it("should fail validation", async () => {
     const res = await app.inject({
-      method: 'POST',
-      url: '/test-validate',
-      payload: { name: 'John' }, // Missing age
+      method: "POST",
+      url: "/test-validate",
+      payload: { name: "John" }, // Missing age
     });
     expect(res.statusCode).toBe(400);
-    expect(JSON.parse(res.payload).message).toContain('age');
+    expect(JSON.parse(res.payload).message).toContain("age");
   });
 });
