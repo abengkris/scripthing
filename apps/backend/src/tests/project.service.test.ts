@@ -7,7 +7,11 @@ describe("Project Service", () => {
       create: vi
         .fn()
         .mockImplementation(({ data }) =>
-          Promise.resolve({ id: "new-id", ...data }),
+          Promise.resolve({
+            id: "new-id",
+            ...data,
+            userId: data.user.connect.id,
+          }),
         ),
       findMany: vi.fn().mockResolvedValue([{ id: "p1", title: "P1" }]),
       findUnique: vi.fn().mockResolvedValue({ id: "p1", title: "P1" }),
